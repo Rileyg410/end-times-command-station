@@ -138,7 +138,7 @@ async function feastcal() {
     $('#feastcal').innerHTML = FEASTS.map((x, i) => {
       const n = dnum(x.d) - t;
       return `<div class="feastrow${i === 0 ? ' next' : ''}"><div class="fe">${x.f[1]}</div><div><h4>${esc(x.f[2])}</h4><div class="fd">${esc(nice(x.d, {weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'}))} · ${esc(x.hd || '')}</div>` +
-        `<div class="small muted">${n <= 0 ? '💗 Today!' : plural(n, 'day') + ' away'} · begins at sundown the evening before</div><p>${esc(x.f[3])}</p></div></div>`;
+        `<div class="small muted">${n <= 0 ? '💗 Today!' : plural(n, 'day') + ' away'} · ${/Hanukkah/.test(x.f[2]) ? 'first candle at sundown that evening' : 'begins at sundown the evening before'}</div><p>${esc(x.f[3])}</p></div></div>`;
     }).join('') + '<p class="foot">Dates from Hebcal · every feast points to Jesus 💗</p>';
   } catch (e) { $('#feastcal').innerHTML = '<div class="empty">God’s calendar will load when I’m back online 💗</div>'; }
 }

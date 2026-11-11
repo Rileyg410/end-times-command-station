@@ -156,7 +156,13 @@ def signs(http_get, load_json, save_json, now_ts, central_time):
         if now_ts - ts > SG_KEEP_H * 3600:
             continue
         fresh.append({"id": mideast._sid(t), "t": ts, "src": it["src"] or "News", "title": t, "link": it["link"], "cats": cats})
-    old = load_json("signs.json", {}).get("stories", [])
+    old = []
+    for o in load_json("signs.json", {}).get("stories", []):
+        low = o["title"].lower()
+        cats = [k for k, rx in SG_CATS if re.search(rx, low)]
+        if cats and not re.search(SG_EXCLUDE, low):
+            o["cats"] = cats
+            old.append(o)
     stories = _merge(fresh, old, now_ts, SG_KEEP_H, 100, "cats") if ok else old
     counts = {k: sum(1 for s in stories if k in s["cats"]) for k, _ in SG_CATS}
     save_json("signs.json", {"updated": now_ts, "updated_ct": central_time(now_ts), "keep_hours": SG_KEEP_H,
