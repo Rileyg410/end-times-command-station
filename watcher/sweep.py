@@ -106,7 +106,7 @@ CATS = [
     ("plague", r"outbreak|pandemic|epidemic|bird flu|h5n1|ebola|marburg|measles|\bplague\b|mpox|new virus"),
     ("war", r"\bwar\b|invasion|invad\w*|\btroops?\b|missiles?|air ?strikes?|\bstrikes? on\b|\bnato\b|drone (attack|strike)s?|offensive|martial law|\bcoup\b|mobiliz\w*|warships?|military"),
 ]
-BIG = (r"nuclear (strike|attack|war|launch|detonat\w*|explosion|blast|alert)|nuclear test|world war|martial law|"
+BIG = (r"nuclear (strike|attack|war|launch|detonat\w*|explosion|blast|alert)|nuclear test|world war (3|iii|three)|\bww(3|iii)\b|martial law|"
        r"magnitude[- ](7\.[5-9]|[89])|\b(7\.[5-9]|[89]\.\d)[- ]magnitude|\bm(7\.[5-9]|[89]\.\d)\b|tsunami warning|"
        r"assassinat\w*|\bcoup\b|overthrow\w*|bank run|market crash|stocks? crash|nationwide (blackout|outage)|"
        r"grid (down|collapse)|declares? war|declaration of war|invades|full-scale invasion|"
@@ -115,7 +115,8 @@ BIG = (r"nuclear (strike|attack|war|launch|detonat\w*|explosion|blast|alert)|nuc
 W_EXCLUDE = (r"\b(podcast|quiz|recipe|crossword|horoscope|football|soccer|basketball|tennis|nfl|nba|mlb|nhl|uefa|fifa|"
              r"celebrity|box office|word of the day|newsletter|in pictures|photos of the day|fashion|memoir|golf|"
              r"video game|gta|movie|film review|tv show|album|concert|festival|recap|best deals|how to watch|"
-             r"star wars|marvel|anniversary of|years ago|on this day)\b")
+             r"star wars|marvel|anniversary of|years ago|on this day|first world war|second world war|world war (i|ii|one|two)|ww(i|ii|1|2)|armistice|veterans?|remembrance|wwii|1918|1945)\b")
+BIG_NOT = r"record high|recover\w*|rebound\w*|lessons|history|historic"
 
 
 def world_run():
@@ -155,7 +156,7 @@ def world_run():
         if NOW_TS - ts > KEEP_HOURS * 3600:
             continue
         fresh.append({"id": mideast._sid(t), "t": ts, "src": it["src"] or "News", "title": t, "link": it["link"],
-                      "snip": mideast.snippet(it["desc"], t), "cats": cats, "big": 1 if re.search(BIG, low) else 0,
+                      "snip": mideast.snippet(it["desc"], t), "cats": cats, "big": 1 if re.search(BIG, low) and not re.search(BIG_NOT, low) else 0,
                       "g": 1 if it["g"] else 0})
     fresh.sort(key=lambda s: (s["g"], -s["t"]))
     old = load_json("world.json", {}).get("stories", []) if ok else []
@@ -170,6 +171,10 @@ def world_run():
             dup["t"] = min(dup["t"], s["t"])
             if not dup.get("snip") and s.get("snip"):
                 dup["snip"] = s["snip"]
+    keep = [k for k in keep if not re.search(W_EXCLUDE, k["title"].lower())]
+    for k in keep:
+        lt = k["title"].lower()
+        k["big"] = 1 if re.search(BIG, lt) and not re.search(BIG_NOT, lt) else 0
     keep.sort(key=lambda s: -s["t"])
     keep = keep[:KEEP_MAX] if ok else load_json("world.json", {}).get("stories", [])
     counts = {k: sum(1 for s in keep if k in s["cats"]) for k, _ in CATS}
