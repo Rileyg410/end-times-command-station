@@ -49,7 +49,7 @@ SG_Q = [
 ]
 SG_CATS = [
     ("fig", r"\bfigs?\b|fig trees?"),
-    ("bloom", r"out of season|\bbloom\w*|blossom\w*|flowering|\bflowers? (in|this) (november|winter|fall)"),
+    ("bloom", r"out of season|out-of-season|(bloom\w*|blossom\w*|flower\w*)\W+(\w+\W+){0,4}(in|this|during) (november|december|winter|the fall|autumn)|(second|rare|unusual|early|strange|surprise|winter|november|december) (bloom|blossom|flowering)\w*|blooming again|reblooming|confused (plants|trees|flowers)"),
     ("sky", r"lights? in the sky|mysterious lights?|strange (lights?|sky|clouds?|glow)|fireball|meteor|\bhalo\b|sky turn\w*|red sky|aurora|northern lights|\bufo|\buap\b|sky glow|orbs?\b"),
     ("water", r"waterspouts?"),
     ("earth", r"sinkholes?|mysterious booms?|loud booms?|\bbooms?\b.*\bmyster|ground shak\w*"),
@@ -59,6 +59,7 @@ SG_CATS = [
 SG_EXCLUDE = (r"recipe|\bjam\b|cookie|newton|salad|cocktail|restaurant|chef|menu|wine|cheese|\bcake\b|fig leaf|"
               r"obituar|podcast|crossword|horoscope|football|soccer|basketball|nfl|nba|mlb|nhl|\bstock\b|shares|"
               r"movie|film|album|song|concert|\bgame\b|video game|fortnite|minecraft|tickets|for sale|real estate|"
+              r"\bart\b|artist|exhibit|gallery|reception|fashion|beauty|skincare|perfume|fragrance|brand|startup|business|economy|wedding dress|"
               r"aurora (colorado|illinois|ohio|police|man|woman|teen|school)|city of aurora|\bdeal\b|% off|black friday")
 
 # ------------------------------------------------------------------ videos
