@@ -193,3 +193,5 @@ if __name__ == "__main__":
         world_run()
     except Exception as e:
         print("world error:", type(e).__name__, e)
+    import extra
+    extra.run_all(http_get, load_json, save_json, NOW_TS, central_time, trusted)

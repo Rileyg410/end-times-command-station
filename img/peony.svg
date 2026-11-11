@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-50 -50 100 100">
+<g fill="#ffd0e2" stroke="#f39abd" stroke-width="1">
+<ellipse rx="16" ry="25" cy="-21"/><ellipse rx="16" ry="25" cy="-21" transform="rotate(45)"/><ellipse rx="16" ry="25" cy="-21" transform="rotate(90)"/><ellipse rx="16" ry="25" cy="-21" transform="rotate(135)"/><ellipse rx="16" ry="25" cy="-21" transform="rotate(180)"/><ellipse rx="16" ry="25" cy="-21" transform="rotate(225)"/><ellipse rx="16" ry="25" cy="-21" transform="rotate(270)"/><ellipse rx="16" ry="25" cy="-21" transform="rotate(315)"/>
+</g>
+<g fill="#ffb3cf" stroke="#ee85ad" stroke-width="1">
+<ellipse rx="13" ry="19" cy="-13" transform="rotate(22)"/><ellipse rx="13" ry="19" cy="-13" transform="rotate(82)"/><ellipse rx="13" ry="19" cy="-13" transform="rotate(142)"/><ellipse rx="13" ry="19" cy="-13" transform="rotate(202)"/><ellipse rx="13" ry="19" cy="-13" transform="rotate(262)"/><ellipse rx="13" ry="19" cy="-13" transform="rotate(322)"/>
+</g>
+<g fill="#ff94bb" stroke="#e2689a" stroke-width="1">
+<ellipse rx="9" ry="12" cy="-7"/><ellipse rx="9" ry="12" cy="-7" transform="rotate(72)"/><ellipse rx="9" ry="12" cy="-7" transform="rotate(144)"/><ellipse rx="9" ry="12" cy="-7" transform="rotate(216)"/><ellipse rx="9" ry="12" cy="-7" transform="rotate(288)"/>
+</g>
+<circle r="6" fill="#ff7aa8"/><circle r="2.2" cx="-2" cy="-2" fill="#ffe6a3"/><circle r="1.8" cx="2.5" cy="1" fill="#ffe6a3"/>
+</svg>

@@ -13,23 +13,26 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
+<div class="glitter" aria-hidden="true"></div>
 <div class="sparkles" aria-hidden="true"></div>
 
 <header class="hero">
-  <div class="ribbon">🎀</div>
-  <h1>END TIMES<br>COMMAND STATION <span class="train">🚉</span></h1>
-  <p class="script">Keeping watch in pink, sister 💗</p>
-  <div class="clocks" id="clocks"></div>
-  <div class="hebday" id="hebday">✡ Finding today's Hebrew date…</div>
+  <div class="heroimg">
+    <div class="bowtop"></div>
+    <h1>END TIMES<br>COMMAND STATION <span class="train">🚉</span></h1>
+    <p class="script">Keeping watch in pink, sister 💗</p>
+    <div class="clocks" id="clocks"></div>
+    <div class="hebday" id="hebday">✡ Finding today's Hebrew date…</div>
+  </div>
 </header>
 
 <main>
   <!-- HOME -->
   <section class="pane on" id="p-home">
-    <div class="card verse" id="verse"></div>
+    <div class="card verse bowed" id="versebox"><div class="bow"></div><div id="verse"></div></div>
 
     <div class="card alertcard" id="bigcard">
       <h2><span>🚨</span> Breaking watch</h2>
@@ -37,44 +40,82 @@
       <button class="pillbtn" data-go="news">See all the news 💌</button>
     </div>
 
-    <h3 class="sect">⏳ My watch dates</h3>
+    <h3 class="sect">Walk with Jesus</h3>
+    <div class="card fl walk" id="walk"></div>
+
+    <h3 class="sect">Hebrew word of the day</h3>
+    <div class="card bowed hw" id="hword"><div class="bow"></div></div>
+
+    <h3 class="sect">My watch dates</h3>
     <div id="watch"></div>
 
-    <div class="card feast" id="feast"><h2>🕎 Next biblical feast</h2><p class="muted">Checking God's calendar…</p></div>
+    <div class="card fl feast" id="feast"><h2>🕎 Next biblical feast</h2><p class="muted">Checking God's calendar…</p></div>
 
-    <h3 class="sect">🕊️ My testimony days</h3>
+    <h3 class="sect">My testimony days</h3>
     <div class="grid2" id="testi"></div>
 
-    <div class="card quakemini" id="quakemini"><h2>🌍 Earth today</h2><p class="muted">Listening to the earth…</p></div>
+    <div class="card fl" id="moonmini"><h2>🌙 Tonight's sky</h2><p class="muted">Looking up…</p></div>
+    <div class="card fl quakemini" id="quakemini"><h2>🌍 Earth today</h2><p class="muted">Listening to the earth…</p></div>
+    <p class="signoff">Lift up your heads 💗</p>
   </section>
 
   <!-- NEWS -->
   <section class="pane" id="p-news">
-    <div class="seg">
+    <div class="banner b-jerusalem" id="newsbanner"><div class="bt"><b id="nbt">Israel &amp; Mideast</b><small id="nbs">Live from the newsrooms</small></div></div>
+    <div class="seg4">
       <button data-desk="mideast" class="on">🇮🇱 Israel &amp; Mideast</button>
       <button data-desk="world">🌍 World watch</button>
+      <button data-desk="ezekiel">⚔️ Ezekiel 38</button>
+      <button data-desk="signs">🌿 Fig tree &amp; signs</button>
     </div>
+    <p class="intro" id="deskintro"></p>
     <div class="chips" id="chips"></div>
     <p class="sub" id="newssub">Linking to the newsroom…</p>
     <div id="newslist"></div>
   </section>
 
-  <!-- QUAKES -->
-  <section class="pane" id="p-quakes">
-    <div class="card"><h2>🌍 Earthquakes, live</h2><p class="muted small">Every quake 4.5 and up around the world in the last 7 days, straight from the USGS. Refreshes every few minutes.</p></div>
+  <!-- PROPHECY -->
+  <section class="pane" id="p-prophecy">
+    <div class="banner b-sunrise"><div class="bt"><b>Prophecy timeline</b><small>Daniel 12 · my watch dates · God's feasts</small></div></div>
+    <div class="card fl" id="dantl"></div>
+    <h3 class="sect">My watch dates</h3>
+    <div class="card" id="watchtl"></div>
+    <h3 class="sect">God's feast calendar</h3>
+    <div class="banner b-wheat"><div class="bt"><b>The appointed times</b><small>“These are the feasts of the LORD” · Leviticus 23:4</small></div></div>
+    <div id="feastcal"><div class="empty">Opening God's calendar… 🕎</div></div>
+  </section>
+
+  <!-- SKY -->
+  <section class="pane" id="p-sky">
+    <div class="banner b-aurora"><div class="bt"><b>Sky &amp; space watch</b><small>“There shall be signs in the sun, and in the moon, and in the stars” · Luke 21:25</small></div></div>
+    <div class="card fl" id="space"><h2>☀️ Space weather</h2><p class="muted">Checking the sun…</p></div>
+    <div class="card fl" id="moon"><h2>🌕 The moon</h2><p class="muted">Finding the moon…</p></div>
+    <div class="banner b-moon"><div class="bt"><b>Eclipses &amp; blood moons</b><small>Dates from NASA's eclipse tables</small></div></div>
+    <div class="card" id="eclipses"></div>
+    <div class="banner b-milky" id="qsec"><div class="bt"><b>Earthquakes, live</b><small>Every 4.5+ worldwide this week · USGS</small></div></div>
     <div class="chips" id="qchips"></div>
     <div id="qlist"></div>
   </section>
 
-  <!-- LOGS -->
+  <!-- VIDEOS -->
+  <section class="pane" id="p-videos">
+    <div class="banner b-galilee"><div class="bt"><b>Watchmen videos</b><small>The newest uploads from my channels</small></div></div>
+    <div class="chips" id="vchips"></div>
+    <p class="sub" id="vsub"></p>
+    <div id="vlist"><div class="empty">Loading the newest videos… 📺</div></div>
+  </section>
+
+  <!-- ME -->
   <section class="pane" id="p-logs">
+    <div class="banner b-peonies"><div class="bt"><b>My testimony</b><small>“They overcame him by the blood of the Lamb, and by the word of their testimony”</small></div></div>
+    <div class="card fl" id="testitl"></div>
     <div class="seg">
       <button data-log="signs" class="on">🌸 My signs</button>
       <button data-log="prayer">🙏 Prayer list</button>
     </div>
 
     <div id="log-signs">
-      <form class="card addform" id="signform">
+      <form class="card fl addform" id="signform">
         <h2>✨ Add a sign</h2>
         <div class="row">
           <input type="date" id="sdate" required>
@@ -95,7 +136,7 @@
     </div>
 
     <div id="log-prayer" hidden>
-      <form class="card addform" id="prayform">
+      <form class="card fl addform" id="prayform">
         <h2>💗 Add to my prayer list</h2>
         <input id="pname" placeholder="Who or what am I praying for?" required>
         <div class="row">
@@ -110,16 +151,21 @@
       <div id="praylist"></div>
     </div>
     <p class="muted small center">My signs and prayers are saved right here on my phone 🔒</p>
+    <p class="signoff">All glory to God 💗</p>
+    <p class="foot">Photos from Wikimedia Commons: <a href="https://commons.wikimedia.org/wiki/File:Bouquet_of_peonies_03.JPG" target="_blank" rel="noopener" style="color:#d6336c">peonies</a> · <a href="https://commons.wikimedia.org/wiki/File:Bouquet_de_roses_roses.jpg" target="_blank" rel="noopener" style="color:#d6336c">roses</a> · <a href="https://commons.wikimedia.org/wiki/File:Ficus_carica_leaves_and_fruits.jpg" target="_blank" rel="noopener" style="color:#d6336c">fig</a> · <a href="https://commons.wikimedia.org/wiki/File:Magenta_G5_aurora_over_Tuntorp,_Lysekil_Municipality_11.jpg" target="_blank" rel="noopener" style="color:#d6336c">aurora</a> · <a href="https://commons.wikimedia.org/wiki/File:FullMoon2010.jpg" target="_blank" rel="noopener" style="color:#d6336c">moon</a> · <a href="https://commons.wikimedia.org/wiki/File:Milky_way1.jpg" target="_blank" rel="noopener" style="color:#d6336c">milky</a> · <a href="https://commons.wikimedia.org/wiki/File:Jerusalem_Dome_of_the_rock_BW_14.JPG" target="_blank" rel="noopener" style="color:#d6336c">jerusalem</a> · <a href="https://commons.wikimedia.org/wiki/File:Mount_Hermon.jpg" target="_blank" rel="noopener" style="color:#d6336c">hermon</a> · <a href="https://commons.wikimedia.org/wiki/File:Wheat_close-up.JPG" target="_blank" rel="noopener" style="color:#d6336c">wheat</a></p>
   </section>
 </main>
 
 <nav class="tabs">
   <button data-go="home" class="on"><b>🎀</b>Station</button>
   <button data-go="news"><b>💌</b>News<i class="dot" id="newsdot"></i></button>
-  <button data-go="quakes"><b>🌍</b>Quakes</button>
-  <button data-go="logs"><b>🌸</b>My logs</button>
+  <button data-go="prophecy"><b>📜</b>Prophecy</button>
+  <button data-go="sky"><b>✨</b>Sky</button>
+  <button data-go="videos"><b>📺</b>Videos</button>
+  <button data-go="logs"><b>🌸</b>Me</button>
 </nav>
 
-<script src="app.js?v=1"></script>
+<script src="app.js?v=2"></script>
+<script src="more.js?v=2"></script>
 </body>
 </html>

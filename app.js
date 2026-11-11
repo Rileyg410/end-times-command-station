@@ -34,10 +34,13 @@ function ct(ts) {
   return (ymd(d) === ymd() ? t : d.toLocaleDateString('en-US', {weekday: 'short', month: 'short', day: 'numeric', timeZone: TZ}) + ', ' + t) + ' CT';
 }
 
+window.ETCS = {$, $$, esc, ymd, ago, ct, store, pad, TZ, LAT, LON, DATA};
 // ---------------------------------------------------------------- sparkles
 (() => {
   const box = $('.sparkles'), em = ['💗', '✨', '🌸', '🎀', '💖', '🩷', '✨', '🌷'];
-  for (let i = 0; i < 14; i++) {
+  for (let i = 0; i < 12; i++) { const p = document.createElement('i'); p.className = 'petal'; p.style.left = (Math.random() * 100) + '%'; p.style.animationDuration = (12 + Math.random() * 14) + 's'; p.style.animationDelay = (-Math.random() * 26) + 's'; box.appendChild(p); }
+  for (let i = 0; i < 22; i++) { const t = document.createElement('s'); t.textContent = i % 3 ? '✦' : '✧'; t.style.left = (Math.random() * 100) + '%'; t.style.top = (Math.random() * 100) + '%'; t.style.fontSize = (8 + Math.random() * 12) + 'px'; t.style.animationDuration = (2 + Math.random() * 3) + 's'; t.style.animationDelay = (-Math.random() * 5) + 's'; box.appendChild(t); }
+  for (let i = 0; i < 16; i++) {
     const e = document.createElement('i');
     e.textContent = em[i % em.length];
     e.style.left = (Math.random() * 100) + '%';
@@ -55,7 +58,7 @@ function go(t) {
   window.scrollTo({top: 0});
   if (t === 'news') { store.set('etcs_seen', Math.floor(Date.now() / 1000)); $('#newsdot').classList.remove('on'); }
 }
-document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) go(b.dataset.go); });
+document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) go(b.dataset.go === 'quakes' ? 'sky' : b.dataset.go); });
 
 // ---------------------------------------------------------------- clocks
 function clocks() {
@@ -92,12 +95,18 @@ const VERSES = [
   ['Then we which are alive and remain shall be caught up together with them in the clouds, to meet the Lord in the air: and so shall we ever be with the Lord.', '1 Thessalonians 4:17'],
   ['Speak to Zerubbabel, governor of Judah, saying, I will shake the heavens and the earth;', 'Haggai 2:21'],
 ];
-function verse() {
-  const d = new Date(ymd() + 'T12:00:00Z');
-  const n = Math.floor(d.getTime() / 86400000);
-  const [t, r] = VERSES[n % VERSES.length];
-  $('#verse').innerHTML = `<div class="vl">✨ Today's verse ✨</div><div class="vt">“${esc(t)}”</div><div class="vr">${esc(r)} 💗</div>`;
+let vIdx = null, vTimer = null;
+function showVerse() {
+  const [t, r] = VERSES[vIdx % VERSES.length];
+  const dots = VERSES.map((_, i) => i === vIdx % VERSES.length ? '♥' : '·').join('');
+  $('#verse').innerHTML = `<div class="vl">✨ ${vIdx === vBase() ? "Today's verse" : 'Verse of the moment'} ✨</div><div class="vt">“${esc(t)}”</div><div class="vr">${esc(r)} 💗</div><div class="dots">tap for the next verse 🌸</div>`;
 }
+const vBase = () => Math.floor(new Date(ymd() + 'T12:00:00Z').getTime() / 86400000) % VERSES.length;
+function verse() {
+  vIdx = vBase(); showVerse();
+  clearInterval(vTimer); vTimer = setInterval(() => { vIdx = (vIdx + 1) % VERSES.length; showVerse(); }, 15000);
+}
+document.addEventListener('click', e => { if (e.target.closest('#versebox')) { vIdx = (vIdx + 1) % VERSES.length; showVerse(); clearInterval(vTimer); vTimer = setInterval(() => { vIdx = (vIdx + 1) % VERSES.length; showVerse(); }, 15000); } });
 
 // ---------------------------------------------------------------- watch dates
 const WATCH = [
@@ -132,6 +141,7 @@ function watch() {
 
 // ---------------------------------------------------------------- testimony days
 const TESTI = [
+  ['👶', 'Elliana was born', '2024-08-28', 'Aug 28, 2024 · my miracle'],
   ['🔥', 'My fire vision', '2025-09-18', 'Sept 18, 2025 · 25 Elul'],
   ['🕰️', 'The clock fell', '2026-04-13', 'April 13, 2026'],
   ['🤍', 'My white-light dream', '2026-04-28', 'April 28, 2026'],
@@ -198,39 +208,55 @@ async function feast() {
 }
 
 // ---------------------------------------------------------------- news
-const ME_CHIPS = [['all', 'All'], ['israel', 'Israel'], ['iran', 'Iran'], ['lebanon', 'Lebanon / Hezbollah'], ['syria', 'Syria'], ['yemen', 'Yemen / Houthis'], ['gulf', 'Gulf']];
 const ME_TAG = {iran: 'IRAN', israel: 'ISRAEL', lebanon: 'LEBANON', syria: 'SYRIA', yemen: 'YEMEN', gulf: 'GULF'};
-const W_CHIPS = [['all', 'All'], ['war', '⚔️ Wars'], ['nuclear', '☢️ Nuclear'], ['disaster', '🌋 Quakes & disasters'], ['cyber', '💡 Cyber & blackouts'], ['money', '💸 Money'], ['temple', '🕍 Temple Mount'], ['plague', '🦠 Plagues']];
 const W_TAG = {war: '⚔️ WAR', nuclear: '☢️ NUCLEAR', disaster: '🌋 DISASTER', cyber: '💡 CYBER / GRID', money: '💸 MONEY', temple: '🕍 TEMPLE MOUNT', plague: '🦠 PLAGUE'};
-let ME = null, WD = null, desk = 'mideast', chip = 'all', hotOnly = false, openSeen = store.get('etcs_seen', 0);
+const EZ_TAG = {russia: '🇷🇺 RUSSIA', iran: '🇮🇷 IRAN', turkey: '🇹🇷 TURKEY', allies: '🤝 ALLIES', north: '⛰️ ISRAEL’S NORTH'};
+const SG_TAG = {fig: '🌿 FIG TREES', bloom: '🌸 BLOOMS', sky: '☁️ SKIES', water: '🌊 WATERSPOUTS', earth: '🌍 EARTH', animals: '🐟 CREATURES', temple: '🕍 TEMPLE'};
 const meBig = s => (s.mil || []).includes('STRIKE') && (s.tags || []).some(t => t === 'israel' || t === 'iran');
-function ncard(s, isMe) {
-  const hot = isMe ? (s.mil && s.mil.length) : s.big;
+const milArr = s => Array.isArray(s.mil) ? s.mil : (s.mil ? [s.mil] : []);
+const DESKS = {
+  mideast: {file: 'mideast.json', key: 'tags', map: ME_TAG, banner: 'b-jerusalem', title: 'Israel & Mideast', sub: 'Live from the newsrooms · Psalm 122:6',
+    intro: 'The newest Israel, Iran and Middle East news. ⚔ marks military moves.',
+    chips: [['all', 'All'], ['israel', 'Israel'], ['iran', 'Iran'], ['lebanon', 'Lebanon / Hezbollah'], ['syria', 'Syria'], ['yemen', 'Yemen / Houthis'], ['gulf', 'Gulf']],
+    hot: s => milArr(s).length, hotLabel: '⚔ Military only', hotKey: 'mil', badge: s => milArr(s).length ? `<i class="alarm">${meBig(s) ? '🚨' : '⚔'} ${esc(milArr(s).join(' · '))}</i>` : ''},
+  world: {file: 'world.json', key: 'cats', map: W_TAG, banner: 'b-milky', title: 'World watch', sub: 'Wars, quakes, money & more · Matthew 24',
+    intro: 'Wars and rumors of wars, nuclear, quakes, disasters, cyberattacks, money and the Temple Mount.',
+    chips: [['all', 'All'], ['war', '⚔️ Wars'], ['nuclear', '☢️ Nuclear'], ['disaster', '🌋 Quakes & disasters'], ['cyber', '💡 Cyber & blackouts'], ['money', '💸 Money'], ['temple', '🕍 Temple Mount'], ['plague', '🦠 Plagues']],
+    hot: s => s.big, hotLabel: '🚨 Big only', hotKey: 'big', badge: s => s.big ? '<i class="alarm">🚨 BIG</i>' : ''},
+  ezekiel: {file: 'ezekiel.json', key: 'tags', map: EZ_TAG, banner: 'b-hermon', title: 'Ezekiel 38 watch', sub: 'Russia · Iran · Turkey & allies · Israel’s north',
+    intro: '“Thou shalt come from thy place out of the north parts… against my people of Israel” (Ezekiel 38:15–16). Military moves by Russia, Iran (Persia), Turkey and their allies around Syria, Lebanon and the Golan.',
+    chips: [['all', 'All'], ['russia', '🇷🇺 Russia'], ['iran', '🇮🇷 Iran'], ['turkey', '🇹🇷 Turkey'], ['allies', '🤝 Allies'], ['north', '⛰️ Israel’s north']],
+    hot: s => milArr(s).length, hotLabel: '⚔ Military only', hotKey: 'mil', badge: s => milArr(s).length ? `<i class="alarm">⚔ ${esc(milArr(s).join(' · '))}</i>` : ''},
+  signs: {file: 'signs.json', key: 'cats', map: SG_TAG, banner: 'b-fig', title: 'Fig tree & signs', sub: '“Now learn a parable of the fig tree” · Matthew 24:32',
+    intro: 'Out-of-season figs and blooms, strange skies and lights, waterspouts, booms and sinkholes, creatures, the red heifer.',
+    chips: [['all', 'All'], ['fig', '🌿 Figs'], ['bloom', '🌸 Blooms'], ['sky', '☁️ Skies'], ['water', '🌊 Waterspouts'], ['earth', '🌍 Earth'], ['animals', '🐟 Creatures'], ['temple', '🕍 Temple']],
+    hot: null, badge: () => ''},
+};
+const DD = {};
+let desk = 'mideast', chip = 'all', hotOnly = false, openSeen = store.get('etcs_seen', 0);
+let ME = null, WD = null;
+function ncard(s, cfg) {
+  const hot = cfg.hot ? cfg.hot(s) : false;
   const fresh = openSeen && (s.seen || s.t) > openSeen;
-  let b = fresh ? '<i class="newb">NEW</i>' : '';
-  if (isMe) {
-    if (s.mil && s.mil.length) b += `<i class="alarm">${meBig(s) ? '🚨' : '⚔'} ${esc(s.mil.join(' · '))}</i>`;
-    b += (s.tags || []).map(t => `<i>${ME_TAG[t] || esc(t)}</i>`).join('');
-  } else {
-    if (s.big) b += '<i class="alarm">🚨 BIG</i>';
-    b += (s.cats || []).map(t => `<i>${W_TAG[t] || esc(t)}</i>`).join('');
-  }
+  let b = (fresh ? '<i class="newb">NEW ✨</i>' : '') + cfg.badge(s) + (s[cfg.key] || []).map(t => `<i>${cfg.map[t] || esc(t)}</i>`).join('');
   return `<a class="ncard${hot ? ' hot' : ''}" href="${esc(s.link)}" target="_blank" rel="noopener"><div class="top"><span class="src">${esc(s.src)}</span><span class="ago">${esc(ago(s.t))} · ${esc(ct(s.t))}</span></div>` +
     `<div class="badges">${b}</div><h4>${esc(s.title)}</h4>${s.snip ? `<p>${esc(s.snip)}</p>` : ''}</a>`;
 }
 function news() {
-  const isMe = desk === 'mideast', D = isMe ? ME : WD, chips = isMe ? ME_CHIPS : W_CHIPS, key = isMe ? 'tags' : 'cats';
+  const cfg = DESKS[desk], D = DD[desk];
   const all = (D && D.stories) || [], c = (D && D.counts) || {};
-  if (!chips.some(x => x[0] === chip)) chip = 'all';
-  $('#chips').innerHTML = chips.map(([k, n]) => `<button data-chip="${k}" class="${chip === k ? 'on' : ''}">${esc(n)} <small>${k === 'all' ? all.length : (c[k] || 0)}</small></button>`).join('') +
-    `<button data-hot="1" class="bigchip${hotOnly ? ' on' : ''}">${isMe ? '⚔ Military only' : '🚨 Big only'} <small>${isMe ? (c.mil || 0) : (c.big || 0)}</small></button>`;
-  $('#newssub').textContent = D ? `Updated ${ago(D.updated)} · ${all.length} stories from the last ${D.keep_hours || 48} hours · refreshes about every 10 min` : 'Linking to the newsroom…';
+  if (!cfg.chips.some(x => x[0] === chip)) chip = 'all';
+  const bn = $('#newsbanner'); bn.className = 'banner ' + cfg.banner; $('#nbt').textContent = cfg.title; $('#nbs').textContent = cfg.sub;
+  $('#deskintro').textContent = cfg.intro;
+  $('#chips').innerHTML = cfg.chips.map(([k, n]) => `<button data-chip="${k}" class="${chip === k ? 'on' : ''}">${esc(n)} <small>${k === 'all' ? all.length : (c[k] || 0)}</small></button>`).join('') +
+    (cfg.hot ? `<button data-hot="1" class="bigchip${hotOnly ? ' on' : ''}">${cfg.hotLabel} <small>${c[cfg.hotKey] || all.filter(cfg.hot).length}</small></button>` : '');
+  $('#newssub').textContent = D ? `Updated ${ago(D.updated)} · ${all.length} stories from the last ${Math.round((D.keep_hours || 48) / 24)} days · refreshes about every 10 min` : 'Linking to the newsroom…';
   if (!D) { $('#newslist').innerHTML = '<div class="empty">Loading the news… 💌</div>'; return; }
   let list = all;
-  if (chip !== 'all') list = list.filter(s => (s[key] || []).includes(chip));
-  if (hotOnly) list = list.filter(s => isMe ? (s.mil && s.mil.length) : s.big);
-  $('#newslist').innerHTML = list.length ? list.map(s => ncard(s, isMe)).join('') + '<div class="foot">Newest first · tap a story to read it all 💗</div>'
-    : '<div class="empty">Nothing here in the last two days 🌸</div>';
+  if (chip !== 'all') list = list.filter(s => (s[cfg.key] || []).includes(chip));
+  if (hotOnly && cfg.hot) list = list.filter(cfg.hot);
+  $('#newslist').innerHTML = list.length ? list.map(s => ncard(s, cfg)).join('') + '<div class="foot">Newest first · tap a story to read it all 💗</div>'
+    : '<div class="empty">Nothing here right now 🌸 It fills in as stories come in.</div>';
 }
 document.addEventListener('click', e => {
   const d = e.target.closest('[data-desk]');
@@ -243,7 +269,7 @@ function bigcard() {
   const a = ((ME && ME.stories) || []).filter(meBig).map(s => ({...s, me: 1}));
   const b = ((WD && WD.stories) || []).filter(s => s.big);
   let list = a.concat(b).sort((x, y) => y.t - x.t).slice(0, 4);
-  if (!list.length) list = ((ME && ME.stories) || []).filter(s => s.mil && s.mil.length).slice(0, 3);
+  if (!list.length) list = ((ME && ME.stories) || []).filter(s => milArr(s).length).slice(0, 3);
   $('#biglist').innerHTML = list.length ? list.map(s => `<a href="${esc(s.link)}" target="_blank" rel="noopener"><b>${esc(s.title)}</b><small>${esc(s.src)} · ${esc(ago(s.t))}</small></a>`).join('')
     : (ME || WD ? '<p class="muted">All quiet on the wall right now 🕊️</p>' : '<p class="muted">Loading the latest…</p>');
   const seen = store.get('etcs_seen', 0);
@@ -252,8 +278,10 @@ function bigcard() {
 }
 async function loadNews() {
   const get = async f => { try { const r = await fetch(DATA + f + '?t=' + Math.floor(Date.now() / 60000)); return r.ok ? await r.json() : null; } catch (e) { return null; } };
-  const [m, w] = await Promise.all([get('mideast.json'), get('world.json')]);
-  if (m) ME = m; if (w) WD = w;
+  const keys = Object.keys(DESKS);
+  const got = await Promise.all(keys.map(k => get(DESKS[k].file)));
+  keys.forEach((k, i) => { if (got[i]) DD[k] = got[i]; });
+  ME = DD.mideast || null; WD = DD.world || null;
   news(); bigcard();
 }
 
