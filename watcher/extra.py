@@ -56,7 +56,7 @@ SG_CATS = [
     ("animals", r"die-?offs?|dead (fish|birds)|locusts?|mass stranding|beached whales?"),
     ("temple", r"red heifers?|third temple"),
 ]
-SG_EXCLUDE = (r"recipe|\bjam\b|cookie|newton|salad|cocktail|restaurant|chef|menu|wine|cheese|\bcake\b|fig leaf|"
+SG_EXCLUDE = (r"\bsow\b|prun\w*|\bbulbs\b|to plant|plant (now|this)|how to grow|garden(ing)? (tips|chores|jobs)|recipe|\bjam\b|cookie|newton|salad|cocktail|restaurant|chef|menu|wine|cheese|\bcake\b|fig leaf|"
               r"obituar|podcast|crossword|horoscope|football|soccer|basketball|nfl|nba|mlb|nhl|\bstock\b|shares|"
               r"movie|film|album|song|concert|\bgame\b|video game|fortnite|minecraft|tickets|for sale|real estate|"
               r"\bart\b|artist|exhibit|gallery|reception|fashion|beauty|skincare|perfume|fragrance|brand|startup|business|economy|wedding dress|"
