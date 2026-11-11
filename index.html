@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>END TIMES COMMAND STATION 🚉</title>
+<meta name="theme-color" content="#ffb6d0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Command Station">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<div class="sparkles" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="ribbon">🎀</div>
+  <h1>END TIMES<br>COMMAND STATION <span class="train">🚉</span></h1>
+  <p class="script">Keeping watch in pink, sister 💗</p>
+  <div class="clocks" id="clocks"></div>
+  <div class="hebday" id="hebday">✡ Finding today's Hebrew date…</div>
+</header>
+
+<main>
+  <!-- HOME -->
+  <section class="pane on" id="p-home">
+    <div class="card verse" id="verse"></div>
+
+    <div class="card alertcard" id="bigcard">
+      <h2><span>🚨</span> Breaking watch</h2>
+      <div id="biglist" class="minilist"><p class="muted">Loading the latest…</p></div>
+      <button class="pillbtn" data-go="news">See all the news 💌</button>
+    </div>
+
+    <h3 class="sect">⏳ My watch dates</h3>
+    <div id="watch"></div>
+
+    <div class="card feast" id="feast"><h2>🕎 Next biblical feast</h2><p class="muted">Checking God's calendar…</p></div>
+
+    <h3 class="sect">🕊️ My testimony days</h3>
+    <div class="grid2" id="testi"></div>
+
+    <div class="card quakemini" id="quakemini"><h2>🌍 Earth today</h2><p class="muted">Listening to the earth…</p></div>
+  </section>
+
+  <!-- NEWS -->
+  <section class="pane" id="p-news">
+    <div class="seg">
+      <button data-desk="mideast" class="on">🇮🇱 Israel &amp; Mideast</button>
+      <button data-desk="world">🌍 World watch</button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <p class="sub" id="newssub">Linking to the newsroom…</p>
+    <div id="newslist"></div>
+  </section>
+
+  <!-- QUAKES -->
+  <section class="pane" id="p-quakes">
+    <div class="card"><h2>🌍 Earthquakes, live</h2><p class="muted small">Every quake 4.5 and up around the world in the last 7 days, straight from the USGS. Refreshes every few minutes.</p></div>
+    <div class="chips" id="qchips"></div>
+    <div id="qlist"></div>
+  </section>
+
+  <!-- LOGS -->
+  <section class="pane" id="p-logs">
+    <div class="seg">
+      <button data-log="signs" class="on">🌸 My signs</button>
+      <button data-log="prayer">🙏 Prayer list</button>
+    </div>
+
+    <div id="log-signs">
+      <form class="card addform" id="signform">
+        <h2>✨ Add a sign</h2>
+        <div class="row">
+          <input type="date" id="sdate" required>
+          <select id="stype">
+            <option value="bloom">🌸 Blooms &amp; plants</option>
+            <option value="fig">🌿 Fig trees</option>
+            <option value="sky">☁️ Skies</option>
+            <option value="water">🌊 Water &amp; waterspouts</option>
+            <option value="earth">🌍 Earth &amp; quakes</option>
+            <option value="dream">🕊️ Dreams &amp; visions</option>
+            <option value="other">✨ Something else</option>
+          </select>
+        </div>
+        <textarea id="snote" rows="3" placeholder="What did I see? 💗" required></textarea>
+        <button class="pillbtn" type="submit">Save my sign 🎀</button>
+      </form>
+      <div id="signlist"></div>
+    </div>
+
+    <div id="log-prayer" hidden>
+      <form class="card addform" id="prayform">
+        <h2>💗 Add to my prayer list</h2>
+        <input id="pname" placeholder="Who or what am I praying for?" required>
+        <div class="row">
+          <select id="pgroup">
+            <option value="israel">🇮🇱 Israel</option>
+            <option value="family" selected>💗 Family</option>
+            <option value="request">🙏 Requests</option>
+          </select>
+        </div>
+        <button class="pillbtn" type="submit">Add 🎀</button>
+      </form>
+      <div id="praylist"></div>
+    </div>
+    <p class="muted small center">My signs and prayers are saved right here on my phone 🔒</p>
+  </section>
+</main>
+
+<nav class="tabs">
+  <button data-go="home" class="on"><b>🎀</b>Station</button>
+  <button data-go="news"><b>💌</b>News<i class="dot" id="newsdot"></i></button>
+  <button data-go="quakes"><b>🌍</b>Quakes</button>
+  <button data-go="logs"><b>🌸</b>My logs</button>
+</nav>
+
+<script src="app.js?v=1"></script>
+</body>
+</html>

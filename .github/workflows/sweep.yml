@@ -1,0 +1,39 @@
+name: News sweep
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Load last sweep
+        run: |
+          mkdir -p datadir
+          if git fetch --depth=1 origin data 2>/dev/null; then
+            git archive FETCH_HEAD | tar -x -C datadir
+          fi
+      - name: Sweep
+        env:
+          DATA_DIR: datadir
+        run: python3 watcher/sweep.py
+      - name: Publish
+        run: |
+          cd datadir
+          rm -f *.tmp
+          git init -q
+          git checkout -q -b data
+          git add -A
+          git -c user.name="station" -c user.email="station@users.noreply.github.com" commit -qm "sweep $(date -u +%FT%TZ)"
+          git push -qf "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" data
