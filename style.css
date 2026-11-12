@@ -428,3 +428,46 @@ body:has(#p-left.on) .hero{display:none}
 .lbwarn{border-color:#ff4f93}
 .lblove h2{font-family:'Dancing Script',cursive;font-size:30px;color:var(--deep);text-align:center}
 .lbbar .you.l em{left:-6px;transform:none}.lbbar .you.r em{left:auto;right:-6px;transform:none}
+/* ===== Batch 4: Threads + Reshaping station ===== */
+.protiles .tile:nth-child(3){grid-column:1/-1;min-height:70px}
+#thmini{display:block;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.thmini .thline{margin:4px 0;font-size:15px}
+.thmini small{color:#a05a7a;font-size:12px;font-weight:600}
+.thmini.glow{box-shadow:0 0 0 3px #ffe08a,0 0 24px rgba(255,200,90,.75),0 10px 24px rgba(214,51,108,.2)}
+.thdate{font-weight:700;color:var(--rose);margin:0 0 8px;font-size:14px}
+.thdate .he{display:block;font-family:'Playfair Display',serif;font-size:19px;direction:rtl;color:var(--deep)}
+.thdan{display:flex;gap:6px;margin:6px 0 12px}
+.thdan span{flex:1;text-align:center;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:6px 2px}
+.thdan b{display:block;font-family:'Playfair Display',serif;font-size:19px;color:var(--hot)}
+.thdan small{font-size:10.5px;color:#a05a7a;font-weight:700;line-height:1.1;display:block}
+.thread{display:flex;gap:10px;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:10px 12px;margin:8px 0}
+.thread.strong{border:2px solid #f3c35e;background:linear-gradient(135deg,#fffaf0,#fff0f7)}
+.thread .te{font-size:26px;line-height:1}
+.thread b{color:var(--deep);font-size:15px}
+.thread p{margin:3px 0 0;font-size:13.5px}
+.thread a{display:block;margin-top:6px;font-size:13px;color:var(--rose);text-decoration:none;font-weight:700}
+.thread a small{color:#a05a7a;font-weight:600}
+.tgold{font-style:normal;font-size:11px;font-weight:800;color:#b07a10;background:#fff3c8;border-radius:99px;padding:1px 7px;margin-left:6px;white-space:nowrap}
+.thnone{text-align:center;font-family:'Dancing Script',cursive;font-size:26px;color:var(--hot);margin:10px 0}
+.thnone small{display:block;font-family:Quicksand,sans-serif;font-size:13px;color:#a05a7a}
+.thday{padding:12px 14px}
+.rsbanner{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:10px 0 2px;padding:10px 14px;border-radius:22px;border:2px solid var(--line);background:linear-gradient(135deg,#fff,#fff0f7)}
+.rsbanner span{font-weight:700;font-size:14px;color:var(--deep)}
+.rsbanner b{display:block;font-family:'Playfair Display',serif;font-size:18px}
+.rsbanner small{display:block;font-size:12px;color:#a05a7a;font-weight:600}
+.rsbanner button{flex:none;border:1.5px solid var(--line);background:#fff;color:var(--rose);border-radius:99px;padding:7px 12px;font:700 12px Quicksand,sans-serif}
+.rsbanner.usual{padding:6px 12px;opacity:.85}.rsbanner.usual span{font-size:13px}
+.rsbanner.rs-calm{background:linear-gradient(135deg,#fdf7fb,#f3eefe);border-color:#e6daf5}
+.rsbanner.rs-israel{background:linear-gradient(135deg,#fff3e6,#ffe1ea);border:2px solid #ff9a5c;box-shadow:0 0 18px rgba(255,120,60,.35);animation:rsglow 2.4s ease-in-out infinite}
+.rsbanner.rs-elijah{background:linear-gradient(135deg,#fff4e0,#ffe6d6);border-color:#ffab5c}
+.rsbanner.rs-quake{background:linear-gradient(135deg,#fff,#f6e9e1);border-color:#e0b39c}
+.rsbanner.rs-peace{background:linear-gradient(135deg,#fff,#ffe3e8);border-color:#ff6b8a}
+@keyframes rsglow{50%{box-shadow:0 0 28px rgba(255,120,60,.6)}}
+.rsisrael{border-color:#ff9a5c}
+.rsisrael .grid2{margin:8px 0}
+.rsisrael .vz{font-size:21px}
+/* calm days: softer, quieter */
+body.rs-calm .glitter{opacity:.25}
+body.rs-calm .sparkles{opacity:.45}
+body.rs-calm #p-home .card{background:linear-gradient(160deg,#fffdfe,#fbf6fd 70%,#f7f1fc) padding-box,linear-gradient(135deg,#f3dcd2,#e9cfe6,#dcc6ea) border-box}
+body.rs-calm #p-home .sect{color:#c9628f;text-shadow:0 2px 0 #fff}

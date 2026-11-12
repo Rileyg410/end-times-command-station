@@ -171,6 +171,8 @@ function openSheet() { $('#vsheet').hidden = false; $('#vsheet').scrollIntoView(
 $('#vIsrael').onclick = () => { fly([-ISR[0], -ISR[1]], 4.2); setTimeout(openSheet, 1700); };
 $('#vEarth').onclick = () => { fly([rot[0], -18], 1); $('#vsheet').hidden = true; };
 $('#vclose').onclick = () => { $('#vsheet').hidden = true; };
+window.ETCS.visionLvl = () => liveLvl;
+window.ETCS.vFocusIsrael = () => fly([-ISR[0], -ISR[1]], 4.2);
 $('#vez').onclick = () => { $('.tabs [data-go="news"]').click(); setTimeout(() => { const d = document.querySelector('[data-desk="ezekiel"]'); if (d) d.click(); }, 30); };
 
 function label() {

@@ -200,5 +200,10 @@ if __name__ == "__main__":
         quakehist.run(http_get, load_json, save_json, NOW_TS)
     except Exception as e:
         print("quakehist error:", type(e).__name__, e)
+    try:
+        import threads
+        threads.run(http_get, load_json, save_json, int(time.time()), os.environ.get("NTFY_TOPIC", "").strip() or None)
+    except Exception as e:
+        print("threads error:", type(e).__name__, e)
     import live
     live.run_all(http_get, load_json, save_json, NOW_TS, central_time, trusted, extra._merge, BIG, BIG_NOT)

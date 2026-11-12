@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 <div class="lbtop" id="lbtop" hidden></div>
@@ -65,6 +65,11 @@
       <div id="biglist" class="minilist"><p class="muted">Loading the latest…</p></div>
       <button class="pillbtn" data-go="news">See all the news 💌</button>
     </div>
+
+    <button class="card fl thmini" id="thmini" data-go="threads">
+      <h2><span>🧵</span> Today's threads</h2>
+      <div class="thm"><p class="muted small">Lining up today…</p></div>
+    </button>
 
     <button class="bobadge" id="bobadge" data-go="blackout">🔦 Saving for blackout… <small>keep the app open a moment</small></button>
     <button class="lbmini" id="lbmini" hidden>🙋‍♀️ I'm still here</button>
@@ -394,9 +399,30 @@
   </section>
 
   <!-- PROPHECY -->
+  <section class="pane" id="p-threads">
+    <div class="banner b-peonies"><div class="bt"><b>Threads</b><small>My days · God's calendar · Daniel's count · today's news</small></div></div>
+    <div class="card bowed"><div class="bow"></div><p class="script big">“And a threefold cord is not quickly broken.”</p><p class="muted center">Ecclesiastes 4:12</p></div>
+    <div class="card fl" id="thtoday"><p class="muted">Lining up today…</p></div>
+    <div class="card fl" id="thsoon" hidden></div>
+    <h3 class="sect">Threads so far</h3>
+    <div id="thhist"><div class="empty">Loading… 🧵</div></div>
+    <div class="card fl">
+      <h2>🌸 How threads work</h2>
+      <p class="small">Every morning at 5 AM Central the station lines up today's Hebrew date, God's feasts, Daniel's 1,260, 1,290 and 1,335 days from my fire vision, my testimony days and the last 24 hours of news. It keeps only what truly lines up:</p>
+      <ul class="ttl small">
+        <li>🎂 the anniversary of one of my days, on our calendar or on the Hebrew calendar</li>
+        <li>🔢 a day count from one of my days that lands right on 40, 50, 52, 70, 120, 153, 207, 390, 430, 490, 500, 888, 1,000, 1,260, 1,290 or 1,335</li>
+        <li>📜 Daniel's days coming up in 207, 52, 40, 7, 3 or 1 days, or landing today</li>
+        <li>🕎 a feast landing on one of my days</li>
+        <li>📰 a story that names a place or phrase from my testimony, like the wall of fire, Elijah, Mount Carmel, Nehemiah's wall, Jericho or lights in the sky</li>
+      </ul>
+      <p class="small">When nothing lines up, it says so. My phone gets one 🧵 ping on a day with a strong thread, never more than one a day.</p>
+    </div>
+  </section>
+
   <section class="pane" id="p-prophecy">
     <div class="banner b-sunrise"><div class="bt"><b>Prophecy timeline</b><small>Daniel 12 · my watch dates · God's feasts</small></div></div>
-    <div class="grid2 protiles"><button class="tile" data-go="mark"><b>💳</b><span>Mark of the beast</span></button><button class="tile" data-go="peace"><b>☮️</b><span>Peace and safety</span></button></div>
+    <div class="grid2 protiles"><button class="tile" data-go="mark"><b>💳</b><span>Mark of the beast</span></button><button class="tile" data-go="peace"><b>☮️</b><span>Peace and safety</span></button><button class="tile" data-go="threads"><b>🧵</b><span>Threads</span></button></div>
     <div class="card fl" id="dantl"></div>
     <h3 class="sect">My watch dates</h3>
     <div class="card" id="watchtl"></div>
@@ -491,9 +517,10 @@
 <script src="app.js?v=7"></script>
 <script src="more.js?v=4"></script>
 <script src="live.js?v=5"></script>
-<script src="vision.js?v=2"></script>
+<script src="vision.js?v=3"></script>
 <script src="blackout.js?v=1"></script>
 <script src="mark.js?v=1"></script>
 <script src="leftbehind.js?v=2"></script>
+<script src="batch4.js?v=1"></script>
 </body>
 </html>
