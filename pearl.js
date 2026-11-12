@@ -18,6 +18,10 @@ const DATA = (() => {
 })();
 const KEYK = 'pearl_key', MEK = 'pearl_me', CHATK = 'pearl_chat';
 let chat = ls.get(CHATK, []);
+const PV = 'dig-1'; // new Pearl personality: start her clean once so old hedgy replies don't stick
+if (ls.get('pearl_pv', '') !== PV) { chat = []; ls.set(CHATK, []); ls.set('pearl_pv', PV); }
+const HEDGE = /word from the lord|won.t pretend|won.t guess|patterns, not predictions|i.m not given|i already told you|don.t see dates the way/i;
+const REMIND = '\n\n[Note for Pearl, not from Zo: answer as her close friend who really digs in. Give your real read with heart and conviction, 2 or 3 possible meanings and which one you lean toward. No disclaimers at all: never say you have no word from the Lord, never say you won\'t pretend or won\'t guess, never say "patterns, not predictions". Don\'t repeat earlier answers; bring something fresh.]';
 let busy = false, SRC = [];
 
 // ---------------------------------------------------------------- who Pearl is
@@ -215,7 +219,8 @@ async function send(text) {
   const me = ls.get(MEK, '');
   let sys = PERSONA + (me ? '\n\n' + me : '') + '\n\nTODAY IN THE STATION (live data from her app):\n' + today;
   if (mine.length) sys += '\n\nEXACT KJV for verses she mentioned:\n' + mine.map(r => `${r.label}: "${r.text}"`).join('\n');
-  const hist = chat.slice(-16).map(m => ({role: m.role, content: m.content.slice(0, 4000)}));
+  const hist = chat.slice(-16).filter(m => !(m.role === 'assistant' && HEDGE.test(m.content))).map(m => ({role: m.role, content: m.content.slice(0, 4000)}));
+  if (hist.length && hist[hist.length - 1].role === 'user') hist[hist.length - 1].content += REMIND;
   const messages = [{role: 'system', content: sys}].concat(hist);
   const src = SRC.slice();
   let res = null, last = '';
