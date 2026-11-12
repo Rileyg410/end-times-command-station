@@ -1,7 +1,7 @@
 /* Blackout mode: keeps the station, the Bible and the last news on the phone */
-const V = 'etcs-v3';
+const V = 'etcs-v4';
 const SHELL = 'etcs-shell-' + V, RUN = 'etcs-run-' + V, BIBLE = 'etcs-bible';
-const CORE = ['./', 'index.html', 'style.css?v=8', 'app.js?v=7', 'more.js?v=4', 'live.js?v=5', 'vision.js?v=2', 'blackout.js?v=1', 'mark.js?v=1', 'leftbehind.js?v=1',
+const CORE = ['./', 'index.html', 'style.css?v=9', 'app.js?v=7', 'more.js?v=4', 'live.js?v=5', 'vision.js?v=2', 'blackout.js?v=1', 'mark.js?v=1', 'leftbehind.js?v=2',
   'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'img/bow.svg', 'img/cluster.svg', 'img/divider.svg', 'img/peony.svg', 'img/rose.svg',
   'img/aurora.jpg', 'img/fig.jpg', 'img/hermon.jpg', 'img/jerusalem.jpg', 'img/milky.jpg', 'img/moon.jpg', 'img/peonies.jpg', 'img/roses.jpg', 'img/wheat.jpg'];

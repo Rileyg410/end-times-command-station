@@ -74,7 +74,7 @@ function timeline() {
   const pct = Math.min(100, day / 2520 * 100);
   const yr = Math.min(7, Math.floor(day / 360) + 1);
   $('#lbtl').innerHTML =
-    `<div class="lbbar"><span class="half"></span><i class="you" style="left:${pct.toFixed(1)}%"><em>You are about here</em></i></div>` +
+    `<div class="lbbar"><span class="half"></span><i class="you${pct < 18 ? ' l' : pct > 82 ? ' r' : ''}" style="left:${pct.toFixed(1)}%"><em>You are about here</em></i></div>` +
     '<div class="lbmarks"><span>⚖️ Covenant<small>Day 1</small></span><span>🕍 The middle<small>Day 1,260</small></span><span>👑 Jesus returns<small>Day 2,520</small></span></div>' +
     `<p class="small center"><b>${cov ? 'Day ' + (day + 1).toLocaleString() + ' since the covenant' : 'Roughly year ' + yr + ' of 7'}</b>${cov ? '' : ', counting from when I left.'}</p>` +
     `<p class="small">The real clock starts when the covenant with Israel is confirmed (Daniel 9:27). That might not be the same day I left. When you know the date it was signed, put it here and the timeline will count from it:</p>` +

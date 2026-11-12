@@ -427,3 +427,4 @@ body:has(#p-left.on) .hero{display:none}
 .lbmarks small{display:block;font-weight:500;color:var(--rose)}
 .lbwarn{border-color:#ff4f93}
 .lblove h2{font-family:'Dancing Script',cursive;font-size:30px;color:var(--deep);text-align:center}
+.lbbar .you.l em{left:-6px;transform:none}.lbbar .you.r em{left:auto;right:-6px;transform:none}
