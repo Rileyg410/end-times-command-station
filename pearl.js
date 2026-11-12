@@ -20,7 +20,8 @@ const KEYK = 'pearl_key', MEK = 'pearl_me', CHATK = 'pearl_chat';
 let chat = ls.get(CHATK, []);
 const PV = 'dig-1'; // new Pearl personality: start her clean once so old hedgy replies don't stick
 if (ls.get('pearl_pv', '') !== PV) { chat = []; ls.set(CHATK, []); ls.set('pearl_pv', PV); }
-const HEDGE = /word from the lord|won.t pretend|won.t guess|patterns, not predictions|i.m not given|i already told you|don.t see dates the way/i;
+const HEDGE = /word from the lord|won.t pretend|won.t guess|patterns, not predictions|i.m not given|i already told you|don.t see dates the way|possible angles|ways i.m reading/i;
+const SMALL = '\n\n[Note for Pearl, not from Zo: this is small talk. Reply like a best friend texting back: 1 or 2 short warm sentences, maybe an emoji, maybe a light question back. No Bible study, no verses, no lists, no headings, no "ways I\'m reading" this, no signs, no gauge. Don\'t pretend to drink coffee or have a body.]';
 const REMIND = '\n\n[Note for Pearl, not from Zo: match the moment like a real friend. Small talk, greetings, thank-yous or a quick feeling get a short, warm, natural reply (1 to 3 sentences), no Bible study, no lists, no "angles", no tying it to signs or the gauge. Only when she asks what you see, what something means, or brings a sign, dream, date or verse to dig into: give your real read with heart and conviction, and 2 or 3 possible meanings with the one you lean toward. Never add disclaimers (no "I have no word from the Lord", "I won\'t pretend", "I won\'t guess"). Only quote a verse word for word when you are sure of the exact KJV wording; otherwise just give the reference. Never force a connection. Don\'t repeat earlier answers.]';
 let busy = false, SRC = [];
 
@@ -200,7 +201,7 @@ async function ask(model, messages, key, groq) {
     const r = await fetch(groq ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST', signal: ctl.signal,
       headers: groq ? {'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json'} : {'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': location.origin + location.pathname, 'X-Title': 'End Times Command Station · Pearl'},
-      body: JSON.stringify(groq ? {model, messages, max_tokens: 1800, temperature: 0.8, stream: true, reasoning_effort: 'low'} : {model, messages, max_tokens: 1800, temperature: 0.8, stream: true, reasoning: {effort: 'low', exclude: true}})
+      body: JSON.stringify(Object.assign(groq ? {model, messages, temperature: 0.8, stream: true, reasoning_effort: 'low'} : {model, messages, temperature: 0.8, stream: true, reasoning: {effort: 'low', exclude: true}}, {max_tokens: window.__pearlSmall ? 400 : 1800}))
     });
     if (!r.ok) {
       const j = await r.json().catch(() => ({}));
@@ -247,11 +248,15 @@ async function send(text) {
   try { await bible(); } catch (e) { /* offline Bible not ready */ }
   const today = await station();
   const mine = refs(text);
+  // small talk (a greeting, a thank-you, a quick feeling) gets a short friend reply, never a Bible study
+  const deep = /\?|what (do|did) you (see|think)|mean|sign|dream|vision|verse|scripture|date|number|prophe|rapture|israel|news|explain|tell me|dig|why|how|connect|thread|nugget|testimony|clock|gauge|fig|elijah|feast|hebrew/i.test(text);
+  const small = !deep && text.split(/\s+/).length <= 20;
+  window.__pearlSmall = small;
   const me = ls.get(MEK, '');
   let sys = PERSONA + (me ? '\n\n' + me : '') + '\n\nTODAY IN THE STATION (live data from her app):\n' + today;
   if (mine.length) sys += '\n\nEXACT KJV for verses she mentioned:\n' + mine.map(r => `${r.label}: "${r.text}"`).join('\n');
   const hist = chat.slice(-16).filter(m => !(m.role === 'assistant' && HEDGE.test(m.content))).map(m => ({role: m.role, content: m.content.slice(0, 4000)}));
-  if (hist.length && hist[hist.length - 1].role === 'user') hist[hist.length - 1].content += REMIND;
+  if (hist.length && hist[hist.length - 1].role === 'user') hist[hist.length - 1].content += small ? SMALL : REMIND;
   const messages = [{role: 'system', content: sys}].concat(hist);
   const src = SRC.slice();
   let res = null, last = '';
@@ -279,7 +284,9 @@ async function send(text) {
   $('#ptyping') && $('#ptyping').remove();
   if (res && res.text) {
     ls.set('pearl_good', MODELS.find(m => res.model.startsWith(m.replace(':free', ''))) || '');
-    chat.push({role: 'assistant', content: res.text, model: res.model, src, refs: refs(res.text)});
+    let out = res.text;
+    if (small) { const paras = out.split(/\n\s*\n/); if (paras.length > 2 || out.length > 450) out = paras[0].slice(0, 450); }
+    chat.push({role: 'assistant', content: out, model: res.model, src, refs: refs(out)});
   } else if (res && res.auth) {
     chat.pop(); toast('OpenRouter said that key isn’t working 🔑 Check it in Pearl settings below.'); $('#pin').value = text; $('#pset').open = true;
   } else {
