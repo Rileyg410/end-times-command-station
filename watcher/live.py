@@ -29,8 +29,8 @@ def _get(url, timeout=15, headers=None):
 # ------------------------------------------------------------------ live cams
 CAM_Q = ["western wall live camera", "kotel live cam", "temple mount live camera", "jerusalem live cam"]
 CAM_DEFAULT = [
-    {"id": "Y3v2WGY-SDc", "title": "The Western Wall", "owner": "Western Wall Heritage Foundation"},
     {"id": "LMHUcDktP-w", "title": "The Western Wall · Main Plaza", "owner": "Western Wall Heritage Foundation"},
+    {"id": "Y3v2WGY-SDc", "title": "The Western Wall", "owner": "Western Wall Heritage Foundation"},
     {"id": "77akujLn4k8", "title": "Western Wall · EarthCam", "owner": "EarthCam"},
     {"id": "zp6LNSoq000", "title": "Western Wall & Temple Archaeological Park", "owner": "Mt. of Olives Prayer Bridge"},
     {"id": "AKGqd20ik_A", "title": "The Kotel", "owner": "Mt. of Olives Prayer Bridge"},
