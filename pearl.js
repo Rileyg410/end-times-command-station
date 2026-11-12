@@ -164,7 +164,7 @@ function bubble(m, i) {
   SRCS = m.src || [];
   if (m.role === 'user') return `<div class="pb mine">${esc(m.content).replace(/\n/g, '<br>')}</div>`;
   const vv = (m.refs || []).map((r, j) => `<button class="pref" data-pref="${i}.${j}">📖 ${esc(r.label)}</button>`).join('');
-  return `<div class="pb her"><div class="pbt">${md(m.content)}</div>${vv ? `<div class="prefs">${vv}</div><div class="pverse" id="pv${i}" hidden></div>` : ''}<small class="pmeta">${m.err ? '' : '🤍 Pearl' + (m.model ? ' · ' + esc(NICE[m.model] || m.model.split('/')[1]) : '')}</small></div>`;
+  return `<div class="pb her"><div class="pbt">${md(m.content)}</div>${vv ? `<div class="prefs">${vv}</div><div class="pverse" id="pv${i}" hidden></div>` : ''}<small class="pmeta">${m.err ? '' : '🤍 Pearl' + (m.model ? ' · ' + esc(NICE[m.model] || (m.model.includes('/') ? m.model.split('/')[1] : m.model)) : '')}</small></div>`;
 }
 function paintChat(scroll) {
   const log = $('#plog'); if (!log) return;
@@ -183,21 +183,23 @@ function paint() {
   $('#pcodebox').hidden = !!me;
   $('#pmeedit').value = me || '';
   $('#pkeystat').textContent = key ? 'Your key is saved on this phone only ' + '(…' + key.slice(-4) + ')' : 'No key saved yet';
+  { const g = ls.get('pearl_groq', ''); const gs = $('#pgroqstat'); if (gs) gs.textContent = g ? 'Groq backup saved on this phone (…' + g.slice(-4) + ') ⚡' : 'No Groq backup yet'; }
   $('#pcard small').textContent = key ? (chat.length ? 'Pick up where we left off 💬' : 'Your friend in the station · tap to talk') : 'Tap to set me up 🔑';
   paintChat(false);
 }
 function toast(t) { const e = $('#ptoast'); if (!e) return; e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => { e.hidden = true; }, 3500); }
 
-async function ask(model, messages, key) {
+const GROQK = 'pearl_groq', GROQ_MODEL = 'openai/gpt-oss-120b';
+async function ask(model, messages, key, groq) {
   // streams the reply so words show up as they come; gives up on a model fast if it doesn't start
   const ctl = new AbortController(); let started = false, t = '', got = model;
   const first = setTimeout(() => { if (!started) ctl.abort(); }, 20000);
   const cap = setTimeout(() => ctl.abort(), 120000);
   try {
-    const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const r = await fetch(groq ? 'https://api.groq.com/openai/v1/chat/completions' : 'https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST', signal: ctl.signal,
-      headers: {'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': location.origin + location.pathname, 'X-Title': 'End Times Command Station · Pearl'},
-      body: JSON.stringify({model, messages, max_tokens: 1800, temperature: 0.8, stream: true, reasoning: {effort: 'low', exclude: true}})
+      headers: groq ? {'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json'} : {'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': location.origin + location.pathname, 'X-Title': 'End Times Command Station · Pearl'},
+      body: JSON.stringify(groq ? {model, messages, max_tokens: 1800, temperature: 0.8, stream: true, reasoning_effort: 'low'} : {model, messages, max_tokens: 1800, temperature: 0.8, stream: true, reasoning: {effort: 'low', exclude: true}})
     });
     if (!r.ok) {
       const j = await r.json().catch(() => ({}));
@@ -258,6 +260,13 @@ async function send(text) {
     res = await ask(m, messages, key);
     if (res.text || res.auth) break;
     last = res.msg;
+    if (res.status === 429 && /per-day|per day|daily|free-models/i.test(res.msg || '')) break; // daily limit hit: stop burning tries
+  }
+  const gk = ls.get(GROQK, '');
+  if (!(res && res.text) && gk) {
+    const tb = $('#ptyping'); if (tb) { tb.className = 'pb her typing'; tb.innerHTML = '<span></span><span></span><span></span>'; }
+    const g = await ask(GROQ_MODEL, messages, gk, true);
+    if (g.text) res = {text: g.text, model: 'Groq · GPT-OSS'}; else last = g.msg || last;
   }
   $('#ptyping') && $('#ptyping').remove();
   if (res && res.text) {
@@ -305,6 +314,9 @@ function build() {
       <textarea id="pmeedit" rows="6"></textarea>
       <button class="pillbtn ghost" id="pmesave">Save what Pearl knows</button>
       <p class="small" id="pkeystat"></p>
+      <label class="small">⚡ Groq backup key <span class="muted">(free, kicks in when OpenRouter runs out)</span></label>
+      <form id="pgroqform" class="pline" autocomplete="off"><input id="pgroq" type="password" placeholder="gsk_…" autocomplete="off" spellcheck="false"><button class="pillbtn" type="submit">Save</button></form>
+      <p class="small" id="pgroqstat"></p>
       <div class="pline"><button class="pillbtn ghost" id="pkeychange">Change key</button><button class="pillbtn ghost" id="pclear">Start a fresh chat</button></div>
     </details>
   </div>
@@ -339,6 +351,11 @@ document.addEventListener('submit', async e => {
       if (r.status === 401) { msg.textContent = 'OpenRouter says that key isn’t right. Copy it again? 🔑'; return; }
     } catch (err) { /* offline: save anyway */ }
     ls.set(KEYK, k); $('#pkey').value = ''; msg.textContent = ''; paint(); toast('Pearl’s awake 🤍✨');
+  }
+  if (e.target.id === 'pgroqform') {
+    e.preventDefault(); const k = $('#pgroq').value.trim();
+    if (!/^gsk_[\w-]{20,}$/.test(k)) { toast('That doesn’t look like a Groq key. It starts with gsk_ 🌸'); return; }
+    ls.set(GROQK, k); $('#pgroq').value = ''; paint(); toast('Groq backup saved ⚡🤍');
   }
   if (e.target.id === 'pcodebox') { e.preventDefault(); try { await unlock($('#pcode').value); $('#pcode').value = ''; paint(); toast('Pearl knows your story now 🤍'); } catch (err) { toast('That code didn’t open it 🌸 Check the letters and try again.'); } }
 });
