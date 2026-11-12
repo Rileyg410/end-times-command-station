@@ -346,6 +346,7 @@ async function loadNews() {
   keys.forEach((k, i) => { if (got[i]) DD[k] = got[i]; });
   ME = DD.mideast || null; WD = DD.world || null;
   news(); bigcard();
+  if (got.some(Boolean)) snapNews();
 }
 
 // ---------------------------------------------------------------- earthquakes (USGS)
@@ -378,8 +379,26 @@ function quakes() {
     '<button class="pillbtn" data-go="quakes">See every quake 🌍</button>';
 }
 document.addEventListener('click', e => { const b = e.target.closest('[data-q]'); if (b) { qchip = b.dataset.q; quakes(); } });
+// blackout mode: keep the last news + quakes on the phone
+function snapNews() {
+  try {
+    const pick = (j, f) => ((j && j.stories) || []).filter(f || (() => true)).slice(0, 15).map(x => ({t: x.t, src: x.src, title: x.title, link: x.link}));
+    const me = DD.mideast, w = DD.world;
+    if (!me && !w) return;
+    const old = store.get('etcs_snap_news', {});
+    store.set('etcs_snap_news', {t: Date.now() / 1000, me: me ? pick(me) : old.me || [], world: w ? pick(w) : old.world || [],
+      big: [...pick(me, meBig), ...pick(w, x => x.big)].sort((a, b) => b.t - a.t).slice(0, 8)});
+    if (window.ETCS.boStatus) window.ETCS.boStatus();
+  } catch (e) { /* storage full: skip */ }
+}
+function snapQuakes() {
+  try {
+    store.set('etcs_snap_quakes', {t: Date.now() / 1000, q: Q.features.map(f => ({m: f.properties.mag, place: f.properties.place || 'Somewhere on earth', t: Math.floor(f.properties.time / 1000), url: f.properties.url})).sort((a, b) => b.t - a.t).slice(0, 40)});
+    if (window.ETCS.boStatus) window.ETCS.boStatus();
+  } catch (e) { /* ok */ }
+}
 async function loadQuakes() {
-  try { Q = await (await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson')).json(); quakes(); }
+  try { Q = await (await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_week.geojson')).json(); quakes(); snapQuakes(); }
   catch (e) { if (!Q) $('#qlist').innerHTML = '<div class="empty">Quakes will load when I\'m back online</div>'; }
 }
 

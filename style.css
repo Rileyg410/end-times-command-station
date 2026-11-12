@@ -309,3 +309,43 @@ main{max-width:560px;margin:0 auto;padding:6px 14px}
 .vhow{margin:8px 4px 0;line-height:1.4}
 .vbtns .pillbtn{flex:1;margin:0;padding:10px 8px;font-size:14px}
 .vrow .pillbtn{width:auto;margin:0;padding:9px 18px;font-size:14px}
+
+/* ---------- blackout mode ---------- */
+.bell.torch{right:auto;left:14px}
+.bobadge{display:block;width:100%;margin:6px 0 4px;border:2px dashed #ffb3cf;border-radius:99px;padding:10px 14px;background:#fff7fb;font:700 15px Quicksand,sans-serif;color:#a05a7a;text-align:center}
+.bobadge small{display:block;font-weight:600;font-size:11.5px;opacity:.85}
+.bobadge.ready{border:2px solid #fff;background:linear-gradient(90deg,#ff4f93,#ff8fbd 55%,#e7a08f);color:#fff;box-shadow:0 5px 16px rgba(255,79,147,.4),0 0 0 3px #ffd6e7}
+.bolist{list-style:none;padding:0;margin:6px 0 8px}
+.bolist li{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-bottom:1px dashed var(--line);font-size:14px;color:#a05a7a}
+.bolist li.ok{color:var(--ink)}.bolist li:last-child{border-bottom:none}
+.bojump{margin:4px 0}.bojump .pillbtn{margin-top:6px;padding:11px 6px;font-size:14px}
+.kjv{display:block;font:600 12px Quicksand,sans-serif;color:#a05a7a;letter-spacing:.5px}
+.bsearch{display:flex;gap:6px;margin:8px 0}
+.bsearch input{flex:1;min-width:0;border:2px solid var(--line);border-radius:99px;padding:10px 14px;font:500 16px Quicksand,sans-serif;background:#fff;color:var(--ink)}
+.bsearch button{border:none;border-radius:50%;width:44px;height:44px;background:linear-gradient(135deg,#ff4f93,#ff8fbd);font-size:18px}
+.bsel{display:flex;gap:6px;margin:6px 0}
+.bsel select{flex:1;min-width:0;border:2px solid var(--line);border-radius:14px;padding:9px 8px;font:600 15px Quicksand,sans-serif;background:#fff;color:var(--deep)}
+.bnav{display:flex;gap:8px}.bnav .pillbtn{margin-top:4px;padding:9px}
+.bread{margin:10px 0 4px}
+.bch{font-family:'Dancing Script',cursive;font-size:34px;color:var(--rose);text-align:center;margin:6px 0 10px}
+.bv{font-family:'Playfair Display',serif;font-size:17px;line-height:1.65;margin:0 0 8px;color:var(--ink)}
+.bv sup{font:700 11px Quicksand,sans-serif;color:var(--rose);margin-right:4px}
+.bv.hi{background:linear-gradient(90deg,#ffe3ef,#fff3f8);border-radius:10px;padding:4px 8px;box-shadow:0 0 0 2px #ffb3cf}
+.bhit{display:block;width:100%;text-align:left;border:none;border-bottom:1px dashed var(--line);background:none;padding:8px 2px;font:500 14px Quicksand,sans-serif;color:var(--ink)}
+.bhit b{display:block;color:var(--rose)}.bhit mark{background:#ffd6e7;border-radius:4px;padding:0 2px}
+#bres{max-height:360px;overflow:auto}
+.gospel h4,.boh{font-family:'Playfair Display',serif;color:var(--deep);font-size:17px;margin:16px 0 4px}
+.gospel p{line-height:1.6}
+.gv{font-family:'Playfair Display',serif;font-style:italic;background:#fff5fa;border-left:4px solid #ff8fbd;border-radius:0 14px 14px 0;padding:8px 12px}
+.gv small{display:block;font:700 12px Quicksand,sans-serif;font-style:normal;margin-top:2px}.gv a{color:var(--rose)}
+.prayer{background:linear-gradient(135deg,#ffe3ef,#fff7fb);border:2px solid #ffc2da;border-radius:20px;padding:4px 14px;font-family:'Dancing Script',cursive;font-size:21px;color:var(--deep)}
+/* ---------- Elijah watch ---------- */
+.card.elijah{transition:box-shadow .4s}
+.elijah .eflame{filter:grayscale(1);opacity:.45}
+.elijah .ev{font-size:18px;color:#a05a7a;margin:2px 0 8px}.elijah .ev small{font:700 12px Quicksand,sans-serif}
+.equiet{color:#a05a7a;margin:4px 0}
+.elijah .tiny{font-size:11.5px;margin:8px 0 0}
+.elijah.lit{box-shadow:0 0 0 3px #ffb347,0 0 24px rgba(255,120,40,.55),0 8px 22px rgba(214,51,108,.2);animation:eglow 2.4s ease-in-out infinite}
+.elijah.lit .eflame{filter:none;opacity:1}
+@keyframes eglow{50%{box-shadow:0 0 0 3px #ff7a2f,0 0 34px rgba(255,90,30,.7),0 8px 22px rgba(214,51,108,.2)}}
+.etag{display:inline-block;font-style:normal;font-size:11.5px;font-weight:700;color:#fff;background:linear-gradient(90deg,#ff7a2f,#ff4f93);border-radius:99px;padding:1px 9px;margin-bottom:3px}

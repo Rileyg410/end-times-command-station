@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=5">
+<link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
 <div class="glitter" aria-hidden="true"></div>
@@ -23,6 +23,7 @@
   <div class="heroimg">
     <div class="bowtop"></div>
     <button class="bell" data-go="alerts" aria-label="Phone alerts">🔔</button>
+    <button class="bell torch" data-go="blackout" aria-label="Blackout mode">🔦</button>
     <h1>END TIMES<br>COMMAND STATION</h1>
     <p class="script">Keeping watch in pink 💗</p>
     <div class="clocks" id="clocks"></div>
@@ -62,6 +63,15 @@
       <h2><span>🚨</span> Breaking watch</h2>
       <div id="biglist" class="minilist"><p class="muted">Loading the latest…</p></div>
       <button class="pillbtn" data-go="news">See all the news 💌</button>
+    </div>
+
+    <button class="bobadge" id="bobadge" data-go="blackout">🔦 Saving for blackout… <small>keep the app open a moment</small></button>
+
+    <div class="card elijah" id="elijah">
+      <h2><span class="eflame">🔥</span> Elijah watch</h2>
+      <p class="script ev">“Behold, I will send you Elijah the prophet before the coming of the great and dreadful day of the LORD.” <small>Malachi 4:5</small></p>
+      <div id="elist"><p class="small equiet">Checking…</p></div>
+      <p class="tiny muted">Lights up only for news of someone publicly claiming to be Elijah or one of the two witnesses (Revelation 11), or something unusual at Mount Carmel or the Mount of Olives. My phone gets a 🔥 ping when one appears.</p>
     </div>
 
     <div class="card verse bowed" id="versebox"><div class="bow"></div><div id="verse"></div></div>
@@ -152,6 +162,55 @@
         <p class="small">Prices refresh about every 10 minutes (bitcoin every minute). Markets close on weekends and holidays, so you'll see the last price then.</p>
       </div>
     </div>
+  </section>
+
+  <!-- BLACKOUT -->
+  <section class="pane" id="p-blackout">
+    <div class="banner b-peonies"><div class="bt"><b>Blackout mode</b><small>No internet, no power grid · it all lives on my phone</small></div></div>
+    <div class="card fl bostat" id="bostat"><h2>🔦 Getting ready…</h2></div>
+    <div class="btnrow bojump"><a class="pillbtn" href="#bible">📖 Bible</a><a class="pillbtn" href="#gospel">✝️ How to be saved</a></div>
+    <div class="btnrow bojump"><a class="pillbtn ghost" href="#botesti">🕊️ Testimony</a><a class="pillbtn ghost" href="#bonews">💌 Saved news</a></div>
+
+    <div class="card bowed" id="bible"><div class="bow"></div>
+      <h2>📖 The Holy Bible <small class="kjv">King James Version</small></h2>
+      <form id="bsearch" class="bsearch"><input id="bq" type="search" placeholder="John 3:16, Psalm 91, or a word like “fire”" enterkeyhint="search"><button aria-label="Search">🔍</button></form>
+      <div id="bres"></div>
+      <div class="bsel"><select id="bbook" aria-label="Book"></select><select id="bchap" aria-label="Chapter"></select></div>
+      <div class="bnav"><button class="pillbtn ghost" id="bprev">‹ Back</button><button class="pillbtn ghost" id="bnext">Next ›</button></div>
+      <div id="bread" class="bread"><p class="muted center">Tap the 🔦 to open the Bible 📖</p></div>
+      <div class="bnav"><button class="pillbtn ghost" id="bprev2" onclick="document.getElementById('bprev').click();document.getElementById('bible').scrollIntoView()">‹ Back</button><button class="pillbtn ghost" onclick="document.getElementById('bnext').click();document.getElementById('bible').scrollIntoView()">Next ›</button></div>
+    </div>
+
+    <div class="card fl gospel" id="gospel">
+      <h2>✝️ How to be saved</h2>
+      <p>Friend, if you're reading this and the lights are out and the world feels upside down, please hear me: <b>God loves you</b>, and it is not too late. Jesus is still saving people right now, today, wherever you are.</p>
+      <h4>💗 God loves you</h4>
+      <p class="gv">“For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.” <small><a href="#" data-bjump="42.3.16">John 3:16</a></small></p>
+      <h4>💔 We all need a Savior</h4>
+      <p>None of us is good enough on our own. Not me, not anybody. Sin separates us from a holy God, and we can't fix it ourselves.</p>
+      <p class="gv">“For all have sinned, and come short of the glory of God.” <small><a href="#" data-bjump="44.3.23">Romans 3:23</a></small></p>
+      <p class="gv">“For the wages of sin is death; but the gift of God is eternal life through Jesus Christ our Lord.” <small><a href="#" data-bjump="44.6.23">Romans 6:23</a></small></p>
+      <h4>✝️ Jesus paid it all</h4>
+      <p>Jesus, God's own Son, lived the perfect life we couldn't, died on the cross for our sins, and rose again on the third day. He took the punishment that was ours so we could be forgiven and made new.</p>
+      <p class="gv">“But God commendeth his love toward us, in that, while we were yet sinners, Christ died for us.” <small><a href="#" data-bjump="44.5.8">Romans 5:8</a></small></p>
+      <h4>🎁 It's a gift, not something you earn</h4>
+      <p>You can't work your way to heaven. Not by being good enough, going to church enough, or following enough rules. Salvation is through <b>Jesus alone</b>, by grace, through faith. It's a gift, and all you do is receive it.</p>
+      <p class="gv">“For by grace are ye saved through faith; and that not of yourselves: it is the gift of God: Not of works, lest any man should boast.” <small><a href="#" data-bjump="48.2.8">Ephesians 2:8–9</a></small></p>
+      <p class="gv">“Jesus saith unto him, I am the way, the truth, and the life: no man cometh unto the Father, but by me.” <small><a href="#" data-bjump="42.14.6">John 14:6</a></small></p>
+      <h4>🙏 Call on Him</h4>
+      <p class="gv">“That if thou shalt confess with thy mouth the Lord Jesus, and shalt believe in thine heart that God hath raised him from the dead, thou shalt be saved.” <small><a href="#" data-bjump="44.10.9">Romans 10:9</a></small></p>
+      <p class="gv">“For whosoever shall call upon the name of the Lord shall be saved.” <small><a href="#" data-bjump="44.10.13">Romans 10:13</a></small></p>
+      <p>There are no magic words. He hears your heart. If you want to, you can pray something like this:</p>
+      <div class="prayer"><p>Jesus, I know I'm a sinner and I can't save myself. I believe You are the Son of God, that You died on the cross for my sins and rose again. I'm sorry for my sin and I turn to You. Please forgive me, come into my life, and be my Lord and Savior. Thank You for loving me and saving me. In Your name, Jesus, amen. 💗</p></div>
+      <h4>🕊️ Now what?</h4>
+      <p>If you prayed that and meant it, welcome to the family! You are His, and nothing can snatch you out of His hand. Talk to Him every day, read His Word (the whole Bible is right here on this page, even with no internet), find other believers, and tell somebody what He did for you. Start with the Gospel of John.</p>
+      <p class="gv">“These things have I written unto you that believe on the name of the Son of God; that ye may know that ye have eternal life…” <small><a href="#" data-bjump="61.5.13">1 John 5:13</a></small></p>
+      <a class="pillbtn" href="#" data-bjump="42.1.1">📖 Start reading John</a>
+    </div>
+
+    <div class="card fl" id="botesti"><h2>🕊️ My testimony timeline</h2></div>
+    <div class="card" id="bonews"><h2>💌 Last news I saved</h2></div>
+    <div class="card" id="boquakes"><h2>🌍 Last quakes I saved</h2></div>
   </section>
 
   <!-- ALERTS -->
@@ -289,9 +348,10 @@
   <button data-go="logs"><b>🌸</b>Me</button>
 </nav>
 
-<script src="app.js?v=5"></script>
-<script src="more.js?v=3"></script>
+<script src="app.js?v=6"></script>
+<script src="more.js?v=4"></script>
 <script src="live.js?v=5"></script>
 <script src="vision.js?v=2"></script>
+<script src="blackout.js?v=1"></script>
 </body>
 </html>

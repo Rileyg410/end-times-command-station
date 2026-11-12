@@ -144,7 +144,7 @@ async function feastcal() {
 }
 
 // ================================================================ testimony timeline
-const TT = [
+const TT = window.ETCS.TT = [
   ['2024-07-02', '💊 The iron pill bottle fell', 'Sometime between July 2 and August 28, 2024, while I was carrying Elliana.', '2024-08-28'],
   ['2024-08-28', '👶 Elliana was born', 'My sweet girl, August 28, 2024.'],
   [null, '🦁 The toy lion', '“Behold, the Lion of the tribe of Juda… hath prevailed” (Revelation 5:5).'],
