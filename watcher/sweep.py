@@ -195,5 +195,10 @@ if __name__ == "__main__":
         print("world error:", type(e).__name__, e)
     import extra
     extra.run_all(http_get, load_json, save_json, NOW_TS, central_time, trusted)
+    try:
+        import quakehist
+        quakehist.run(http_get, load_json, save_json, NOW_TS)
+    except Exception as e:
+        print("quakehist error:", type(e).__name__, e)
     import live
     live.run_all(http_get, load_json, save_json, NOW_TS, central_time, trusted, extra._merge, BIG, BIG_NOT)

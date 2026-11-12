@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 <div class="glitter" aria-hidden="true"></div>
@@ -33,13 +33,39 @@
 <main>
   <!-- HOME -->
   <section class="pane on" id="p-home">
-    <div class="card verse bowed" id="versebox"><div class="bow"></div><div id="verse"></div></div>
-
+    <div class="card bowed vision" id="vision"><div class="bow"></div>
+      <h2 class="vt">My vision</h2>
+      <p class="vsub">September 18, 2025 · the earth covered in fire, the gauge nearly full, Israel walled in fire</p>
+      <div class="vwrap"><canvas id="vglobe" aria-label="Earth on fire"></canvas><p class="vload" id="vload">Lighting the globe… 🔥</p></div>
+      <p class="vlevel" id="vlevel">Reading the fire…</p>
+      <p class="vinfo" id="vinfo"></p>
+      <p class="vtap" id="vtap"></p>
+      <div class="vbtns"><button class="pillbtn" id="vIsrael">🇮🇱 Focus on Israel</button><button class="pillbtn ghost" id="vEarth">🌍 Whole earth</button></div>
+      <div class="vsheet" id="vsheet" hidden>
+        <div class="vsh"><b>🔥 Israel · a wall of fire</b><button id="vclose" aria-label="Close">✕</button></div>
+        <p class="script vz">“For I, saith the LORD, will be unto her a wall of fire round about.” <small>Zechariah 2:5</small></p>
+        <div class="vgrid">
+          <button class="tile" data-open="sirens"><b>🚨</b><span>Sirens</span></button>
+          <button class="tile" data-open="cam"><b>📹</b><span>Kotel live cam</span></button>
+          <button class="tile" data-open="temple"><b>🕍</b><span>Third Temple</span></button>
+          <button class="tile" id="vez"><b>⚔️</b><span>Ezekiel 38</span></button>
+        </div>
+      </div>
+      <div class="vreplay" id="vreplay" hidden>
+        <div class="vrow"><button class="pillbtn" id="vplay">▶ Replay</button><span class="vdate" id="vdate">Today</span></div>
+        <input type="range" id="vday" min="0" max="1" value="1" step="1" aria-label="Replay day">
+        <div class="vends"><span>Sept 18, 2025</span><span>Today</span></div>
+      </div>
+      <p class="muted small vhow">Drag to spin the earth · tap a fire to see what it is · tap Israel for the watch. The fire glows where quakes (USGS), Israel sirens, military news and 🚨 big stories hit in the last 24 hours. The gauge compares the last 24 hours with the days around my vision (the real quakes of September 18 and 19, 2025, when an M7.8 hit Kamchatka, plus an estimated wartime day of sirens and news). Its tick marks that September 18, 2025 level, nearly full.</p>
+    </div>
     <div class="card alertcard" id="bigcard">
       <h2><span>🚨</span> Breaking watch</h2>
       <div id="biglist" class="minilist"><p class="muted">Loading the latest…</p></div>
       <button class="pillbtn" data-go="news">See all the news 💌</button>
     </div>
+
+    <div class="card verse bowed" id="versebox"><div class="bow"></div><div id="verse"></div></div>
+
 
     <div class="sirenflash" id="sirenflash" hidden></div>
     <h3 class="sect">Live from Jerusalem</h3>
@@ -266,5 +292,6 @@
 <script src="app.js?v=3"></script>
 <script src="more.js?v=3"></script>
 <script src="live.js?v=4"></script>
+<script src="vision.js?v=1"></script>
 </body>
 </html>
