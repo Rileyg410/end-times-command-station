@@ -189,21 +189,49 @@ function paint() {
 function toast(t) { const e = $('#ptoast'); if (!e) return; e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => { e.hidden = true; }, 3500); }
 
 async function ask(model, messages, key) {
-  const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 60000);
+  // streams the reply so words show up as they come; gives up on a model fast if it doesn't start
+  const ctl = new AbortController(); let started = false, t = '', got = model;
+  const first = setTimeout(() => { if (!started) ctl.abort(); }, 20000);
+  const cap = setTimeout(() => ctl.abort(), 120000);
   try {
     const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST', signal: ctl.signal,
       headers: {'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': location.origin + location.pathname, 'X-Title': 'End Times Command Station · Pearl'},
-      body: JSON.stringify({model, messages, max_tokens: 3000, temperature: 0.8, reasoning: {effort: 'low', exclude: true}})
+      body: JSON.stringify({model, messages, max_tokens: 1800, temperature: 0.8, stream: true, reasoning: {effort: 'low', exclude: true}})
     });
-    const j = await r.json().catch(() => ({}));
-    if (r.status === 401 || r.status === 403 && /key|auth/i.test(JSON.stringify(j))) return {auth: true, msg: (j.error && j.error.message) || 'bad key'};
-    if (!r.ok) return {fail: true, msg: (j.error && j.error.message) || ('HTTP ' + r.status), status: r.status};
-    const c = j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content;
-    const t = (Array.isArray(c) ? c.map(x => x.text || '').join('') : c || '').replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+    if (!r.ok) {
+      const j = await r.json().catch(() => ({}));
+      if (r.status === 401 || r.status === 403 && /key|auth/i.test(JSON.stringify(j))) return {auth: true, msg: (j.error && j.error.message) || 'bad key'};
+      return {fail: true, msg: (j.error && j.error.message) || ('HTTP ' + r.status), status: r.status};
+    }
+    const rd = r.body.getReader(), dec = new TextDecoder(); let buf = '';
+    for (;;) {
+      const {done, value} = await rd.read(); if (done) break;
+      buf += dec.decode(value, {stream: true});
+      let i;
+      while ((i = buf.indexOf('\n')) >= 0) {
+        const line = buf.slice(0, i).trim(); buf = buf.slice(i + 1);
+        if (!line.startsWith('data:')) continue;
+        const d = line.slice(5).trim(); if (d === '[DONE]') continue;
+        let j; try { j = JSON.parse(d); } catch (e) { continue; }
+        if (j.error) return {fail: true, msg: j.error.message || 'error'};
+        if (j.model) got = j.model;
+        const c = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content;
+        if (c) {
+          t += c; started = true;
+          const shown = t.replace(/<think>[\s\S]*?(<\/think>|$)/g, '').trim();
+          const tb = $('#ptyping'); if (tb && shown) { tb.classList.remove('typing'); tb.innerHTML = '<div class="pbt">' + md(shown) + '</div>'; }
+        }
+      }
+    }
+    t = t.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
     if (!t) return {fail: true, msg: 'empty reply'};
-    return {text: t, model: j.model || model};
-  } catch (e) { return {fail: true, msg: e.name === 'AbortError' ? 'timed out' : 'network'}; } finally { clearTimeout(to); }
+    return {text: t, model: got};
+  } catch (e) {
+    t = t.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+    if (started && t.length > 40) return {text: t, model: got};
+    return {fail: true, msg: e.name === 'AbortError' ? 'timed out' : 'network'};
+  } finally { clearTimeout(first); clearTimeout(cap); }
 }
 async function send(text) {
   text = (text || '').trim(); if (!text || busy) return;
@@ -226,6 +254,7 @@ async function send(text) {
   let res = null, last = '';
   const order = MODELS.slice(); const good = ls.get('pearl_good', ''); if (good && order.includes(good)) { order.splice(order.indexOf(good), 1); order.unshift(good); }
   for (const m of order) {
+    const tb = $('#ptyping'); if (tb) { tb.className = 'pb her typing'; tb.innerHTML = '<span></span><span></span><span></span>'; }
     res = await ask(m, messages, key);
     if (res.text || res.auth) break;
     last = res.msg;
