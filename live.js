@@ -207,7 +207,7 @@ function spark(a, up) {
   const col = up ? '#22a06b' : '#e0306f';
   return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${col}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 }
-function mword(k, c) { const n = MK[k].n.replace(/ \(.*\)/, '').toLowerCase(); return `${k === 'sp500' ? 'stocks' : n} ${c >= 0 ? 'up' : 'down'} ${Math.abs(c).toFixed(1)}%`; }
+function mword(k, c) { const n = MK[k].n.replace(/ \(.*\)/, '').toLowerCase(); return `${k === 'sp500' ? 'stocks' : k === 'dollar' ? 'the dollar' : n} ${c >= 0 ? 'up' : 'down'} ${Math.abs(c).toFixed(1)}%`; }
 function summary(m) {
   const g = m.gold, s = m.sp500, o = m.oil;
   const movers = ORDER.filter(k => m[k]).sort((a, b) => Math.abs(m[b].chg) / m[b].limit - Math.abs(m[a].chg) / m[a].limit);

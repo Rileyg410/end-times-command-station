@@ -225,7 +225,7 @@ main{max-width:560px;margin:0 auto;padding:6px 14px}
 .signoff::before{content:'';display:block;width:110px;height:110px;margin:0 auto -8px;background:url(img/cluster.svg) center/contain no-repeat}
 /* ---------- round 3: live rooms ---------- */
 .tabs button{font-size:10px;letter-spacing:-.1px}.tabs button b{font-size:20px}
-.bell{position:absolute;bottom:14px;right:14px;z-index:3;width:42px;height:42px;border-radius:50%;border:2px solid #fff;background:linear-gradient(135deg,#ff4f93,#ff8fbd 60%,#e7a08f);font-size:20px;box-shadow:0 4px 12px rgba(255,79,147,.45);animation:sway 4s ease-in-out infinite}
+.bell{position:absolute;bottom:14px;right:14px;z-index:3;width:42px;height:42px;border-radius:50%;border:2px solid #fff;background:linear-gradient(135deg,#ff4f93,#ff8fbd 60%,#e7a08f);font-size:20px;box-shadow:0 4px 12px rgba(255,79,147,.45)}
 .livestrip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin:8px 0}
 .tile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:96px;border:2px solid transparent;background:linear-gradient(180deg,#fff,#fff3f8) padding-box,linear-gradient(135deg,var(--rg1),#ff8fbd,var(--rg2)) border-box;border-radius:22px;padding:10px 6px;font:700 13px Quicksand,sans-serif;color:var(--deep);box-shadow:0 5px 14px rgba(214,51,108,.14);text-align:center;transition:transform .15s}
 .tile:active{transform:scale(.97)}

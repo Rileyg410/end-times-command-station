@@ -176,7 +176,7 @@ def sirens(load_json, save_json, now_ts):
 
 
 # ------------------------------------------------------------------ Third Temple tracker
-TT_KEEP_H = 24 * 10
+TT_KEEP_H = 24 * 30
 TT_Q = [
     '"red heifer" OR "red heifers"',
     '"Temple Institute" OR "Third Temple"',
@@ -194,22 +194,51 @@ TT_TAGS = [
     ("altar", r"\baltar\b|sacrific\w*|offering|kohanim|\bpriest\w*|levites?|temple vessels|incense|menorah|passover lamb"),
 ]
 TT_SRC = r"breaking israel news|israel365|jns|all israel news|israel national news|arutz|cbn|christian post|jerusalem post|times of israel|i24|ynet|israel hayom|haaretz|jewish press|the jewish|algemeiner|middle east eye|al jazeera|anadolu|wafa|the new arab|al-monitor|tps|vos iz neias|hamodia|aish|chabad|kipa|charisma|prophecy|watch"
-TT_NOT = r"recipe|wedding|concert|football|soccer|basketball|hotel|tour package|for sale|mormon|lds|\bfreemason|masonic|hindu|buddhist|ram mandir|mandir"
+TT_CTX = r"israel|temple|jerusalem|prophe|bible|biblical|jewish|jews|rabbi|ashes|third temple|kohen|kohanim|levit|shiloh|messiah|torah|zion|al-aqsa|holy|sanhedrin"
+TT_NOT = r"exploring|veteran|cattle|livestock|\\bgns\\b|breeder|\\bsale\\b|cult of the|beef|travel guide|things to do|recipe|wedding|concert|football|soccer|basketball|hotel|tour package|for sale|mormon|lds|\bfreemason|masonic|hindu|buddhist|ram mandir|mandir"
 
 
 def _gnews(q, days):
     return "https://news.google.com/rss/search?" + urllib.parse.urlencode({"q": q + f" when:{days}d", "hl": "en-US", "gl": "US", "ceid": "US:en"})
 
 
+BING_Q = ['"red heifer"', '"Temple Institute"', '"Third Temple"', '"Temple Mount"', 'Sanhedrin Israel', '"Al-Aqsa" Jews', 'Temple Mount altar OR sacrifice OR priests']
+
+
+def _bing(raw):
+    import xml.etree.ElementTree as ET
+    from email.utils import parsedate_to_datetime
+    out = []
+    for it in ET.fromstring(raw).iter("item"):
+        title = (it.findtext("title") or "").strip()
+        link = (it.findtext("link") or "").strip()
+        q = urllib.parse.parse_qs(urllib.parse.urlparse(link).query)
+        link = q.get("url", [link])[0]
+        src = it.findtext("{https://www.bing.com/news/search?q=%22red+heifer%22&format=rss}Source") or ""
+        for ch in it:
+            if ch.tag.endswith("}Source"):
+                src = (ch.text or "").strip()
+        try:
+            ts = int(parsedate_to_datetime(it.findtext("pubDate")).timestamp())
+        except Exception:
+            ts = None
+        desc = re.sub(r"<[^>]+>", "", it.findtext("description") or "")
+        if title and link.startswith("http"):
+            out.append({"title": title, "link": link, "src": src, "desc": desc, "ts": ts})
+    return out
+
+
 def temple(http_get, load_json, save_json, now_ts, central_time, trusted, merge):
     def f(u):
         try:
-            return mideast.parse(http_get(u, timeout=15), "", True), None
+            raw = http_get(u, timeout=15)
+            return (_bing(raw) if "bing.com" in u else mideast.parse(raw, "", True)), None
         except Exception as e:
             return [], type(e).__name__
+    urls = [_gnews(q, 14) for q in TT_Q] + ["https://www.bing.com/news/search?" + urllib.parse.urlencode({"q": q, "format": "rss", "qft": "sortbydate=\"1\""}) for q in BING_Q]
     items, ok = [], 0
-    with ThreadPoolExecutor(max_workers=7) as ex:
-        for got, err in ex.map(f, [_gnews(q, 7) for q in TT_Q]):
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        for got, err in ex.map(f, urls):
             if not err:
                 ok += 1
                 items += got
@@ -219,9 +248,9 @@ def temple(http_get, load_json, save_json, now_ts, central_time, trusted, merge)
         low = t.lower()
         if len(t) < 20 or re.search(TT_NOT, low) or re.search(mideast.OPINION, low):
             continue
-        if not trusted(it["src"]) and not re.search(TT_SRC, (it["src"] or "").lower()):
-            continue
         tags = [k for k, rx in TT_TAGS if re.search(rx, low)]
+        ctx = re.search(TT_CTX, low) or re.search(TT_SRC, (it["src"] or "").lower())
+        tags = [k for k in tags if k in ("mount", "institute") or ctx]
         if not tags:
             continue
         ts = min(it["ts"] or now_ts, now_ts)
@@ -234,7 +263,7 @@ def temple(http_get, load_json, save_json, now_ts, central_time, trusted, merge)
     counts = {k: sum(1 for s in stories if k in s["tags"]) for k, _ in TT_TAGS}
     save_json("temple.json", {"updated": now_ts, "updated_ct": central_time(now_ts), "keep_hours": TT_KEEP_H,
                               "count": len(stories), "counts": counts, "stories": stories})
-    print(f"temple: {len(stories)} stories from {ok} feeds")
+    print(f"temple: {len(stories)} stories ({len(fresh)} fresh of {len(items)} raw) from {ok}/{len(urls)} feeds")
 
 
 # ------------------------------------------------------------------ markets
