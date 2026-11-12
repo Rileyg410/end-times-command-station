@@ -1,7 +1,7 @@
 /* Blackout mode: keeps the station, the Bible and the last news on the phone */
-const V = 'etcs-v11';
+const V = 'etcs-v12';
 const SHELL = 'etcs-shell-' + V, RUN = 'etcs-run-' + V, BIBLE = 'etcs-bible';
-const CORE = ['./', 'index.html', 'style.css?v=10', 'lace.css?v=2', 'pearl.css?v=2', 'pearl.js?v=2', 'rooms.js?v=2', 'app.js?v=8', 'more.js?v=4', 'live.js?v=6', 'vision.js?v=4', 'blackout.js?v=1', 'mark.js?v=1', 'leftbehind.js?v=2', 'batch4.js?v=3', 'luxe.css?v=1', 'luxe.js?v=1',
+const CORE = ['./', 'index.html', 'style.css?v=10', 'lace.css?v=2', 'pearl.css?v=2', 'pearl.js?v=4', 'rooms.js?v=2', 'app.js?v=8', 'more.js?v=4', 'live.js?v=6', 'vision.js?v=4', 'blackout.js?v=1', 'mark.js?v=1', 'leftbehind.js?v=2', 'batch4.js?v=3', 'luxe.css?v=1', 'luxe.js?v=1',
   'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
   'img/bow.svg', 'img/valance.svg', 'img/pearl-ring.svg', 'img/cluster.svg', 'img/divider.svg', 'img/peony.svg', 'img/rose.svg',
   'img/lace.svg', 'img/lace-ring.svg', 'img/aurora.jpg', 'img/fig.jpg', 'img/hermon.jpg', 'img/jerusalem.jpg', 'img/milky.jpg', 'img/moon.jpg', 'img/peonies.jpg', 'img/roses.jpg', 'img/wheat.jpg'];
