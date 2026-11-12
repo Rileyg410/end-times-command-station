@@ -40,10 +40,26 @@ function mergeLive(f, j) {
   return j;
 }
 const rawFetch = window.fetch.bind(window);
+// read the newest data commit directly (the branch link can be up to 5 min behind)
+const [, OWNER, REPO] = /githubusercontent\.com\/([^/]+)\/([^/]+)\//.exec(DATA) || [];
+let SHA = '', shaAt = 0, shaP = null;
+function dataSha() {
+  if (Date.now() - shaAt < 90000) return Promise.resolve(SHA);
+  if (!shaP) shaP = (async () => {
+    let t = '';
+    try { const r = await rawFetch(`https://api.github.com/repos/${OWNER}/${REPO}/commits/data`, {headers: {Accept: 'application/vnd.github.sha'}}); if (r.ok) t = (await r.text()).trim(); } catch (e) { /* offline */ }
+    SHA = /^[0-9a-f]{40}$/.test(t) ? t : ''; shaAt = Date.now(); shaP = null; return SHA;
+  })();
+  return shaP;
+}
 window.fetch = async (u, o) => {
-  const r = await rawFetch(u, o);
   const s = typeof u === 'string' ? u : (u && u.url) || '';
-  if (!r.ok || !s.startsWith(DATA)) return r;
+  if (!s.startsWith(DATA)) return rawFetch(u, o);
+  let r = null;
+  const sha = OWNER ? await dataSha() : '';
+  if (sha) { try { r = await rawFetch(DATA.replace(/data\/$/, sha + '/') + s.slice(DATA.length), o); } catch (e) { r = null; } }
+  if (!r || !r.ok) r = await rawFetch(u, o);
+  if (!r.ok) return r;
   const f = s.slice(DATA.length).split('?')[0];
   if (!DELTA[f]) return r;
   try { return new Response(JSON.stringify(mergeLive(f, await r.clone().json())), {status: 200, headers: {'Content-Type': 'application/json'}}); } catch (e) { return r; }
