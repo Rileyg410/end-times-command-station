@@ -147,6 +147,7 @@ async function loadWorld() {
 window.ETCS.reshape = () => ({state, why, usual: usualFor === state});
 
 loadThreads(); loadWorld();
+if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('controllerchange', () => { loadThreads(); loadWorld(); });  // so blackout mode keeps a copy
 setTimeout(reshape, 4000);  // once the vision gauge has read the fire
 setInterval(loadWorld, 60000);
 setInterval(loadThreads, 15 * 60000);
