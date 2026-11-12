@@ -27,6 +27,7 @@ jobs:
       - name: Sweep
         env:
           DATA_DIR: datadir
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: python3 watcher/sweep.py
       - name: Publish
         run: |

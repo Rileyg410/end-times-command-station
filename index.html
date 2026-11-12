@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 <div class="glitter" aria-hidden="true"></div>
@@ -22,6 +22,7 @@
 <header class="hero">
   <div class="heroimg">
     <div class="bowtop"></div>
+    <button class="bell" data-go="alerts" aria-label="Phone alerts">🔔</button>
     <h1>END TIMES<br>COMMAND STATION</h1>
     <p class="script">Keeping watch in pink 💗</p>
     <div class="clocks" id="clocks"></div>
@@ -40,6 +41,15 @@
       <button class="pillbtn" data-go="news">See all the news 💌</button>
     </div>
 
+    <div class="sirenflash" id="sirenflash" hidden></div>
+    <h3 class="sect">Live from Jerusalem</h3>
+    <div class="livestrip" id="livestrip">
+      <button class="tile camtile" data-open="cam"><span class="lp">● LIVE</span><b>📹</b>Western Wall cam</button>
+      <button class="tile" data-open="sirens" id="t-sirens"><b>🚨</b><span>Sirens</span><small>Checking…</small></button>
+      <button class="tile" data-open="markets" id="t-mkt"><b>💰</b><span>Markets</span><small>Loading…</small></button>
+    </div>
+    <button class="tile wide" data-open="temple" id="t-temple"><b>🕍</b><span>Third Temple tracker</span><small>Watching the Mount…</small></button>
+
     <h3 class="sect">Walk with Jesus</h3>
     <div class="card fl walk" id="walk"></div>
 
@@ -57,6 +67,92 @@
     <div class="card fl" id="moonmini"><h2>🌙 Tonight's sky</h2><p class="muted">Looking up…</p></div>
     <div class="card fl quakemini" id="quakemini"><h2>🌍 Earth today</h2><p class="muted">Listening to the earth…</p></div>
     <p class="signoff">Lift up your heads 💗</p>
+  </section>
+
+  <!-- LIVE -->
+  <section class="pane" id="p-live">
+    <div class="seg4 livenav">
+      <button data-live="cam" class="on">📹 Kotel cam</button>
+      <button data-live="sirens">🚨 Sirens</button>
+      <button data-live="temple">🕍 Temple</button>
+      <button data-live="markets">💰 Markets</button>
+    </div>
+
+    <div class="lsub" id="l-cam">
+      <div class="camwrap"><div class="camframe" id="camframe"></div><span class="livepill">● LIVE</span></div>
+      <p class="camnow" id="camnow"></p>
+      <div class="chips" id="camchips"></div>
+      <div class="card bowed camverse"><div class="bow"></div><p class="script big">“Pray for the peace of Jerusalem: they shall prosper that love thee.”</p><p class="muted center">Psalm 122:6</p></div>
+      <p class="muted small center" id="camnote">Live straight from the Western Wall plaza. If a picture ever freezes, tap another camera 💗</p>
+    </div>
+
+    <div class="lsub" id="l-sirens" hidden>
+      <div class="banner b-jerusalem"><div class="bt"><b>Israel sirens</b><small>Red Alert · Home Front Command · live</small></div></div>
+      <div class="card sirenstat" id="sirenstat"><p class="muted">Listening…</p></div>
+      <div id="sirennow"></div>
+      <div class="grid3" id="sirenstats"></div>
+      <h3 class="sect">Recent alerts</h3>
+      <div id="sirenlist"><div class="empty">Loading alert history… 🚨</div></div>
+      <p class="muted small center" id="sirensrc">Alerts come from Israel's Home Front Command through the Tzofar (Tzeva Adom) relay. Live alerts show up here within seconds 💗</p>
+    </div>
+
+    <div class="lsub" id="l-temple" hidden>
+      <div class="banner b-jerusalem"><div class="bt"><b>Third Temple tracker</b><small>Red heifers · Temple Mount · Sanhedrin · priests</small></div></div>
+      <div class="card fl ttx">
+        <h2>🕍 Why it matters</h2>
+        <p>Scripture says there will be a temple standing in Jerusalem in the last days:</p>
+        <ul class="ttl">
+          <li><b>Daniel 9:27</b> · a covenant is confirmed, then in the middle of the week the sacrifice and offering are made to cease.</li>
+          <li><b>Matthew 24:15</b> · Jesus said to watch for the abomination of desolation “stand in the holy place.”</li>
+          <li><b>2 Thessalonians 2:4</b> · the man of sin “sitteth in the temple of God, shewing himself that he is God.”</li>
+          <li><b>Revelation 11:1–2</b> · John is told to measure the temple of God, the altar, and them that worship therein.</li>
+          <li><b>Numbers 19</b> · the ashes of a perfect red heifer are needed for purification before priests can serve.</li>
+        </ul>
+        <p class="muted small">So every red heifer, every altar, every trained priest and every Temple Mount change is one more piece falling into place 🕊️</p>
+      </div>
+      <div class="chips" id="ttchips"></div>
+      <p class="sub" id="ttsub"></p>
+      <div id="ttlist"><div class="empty">Loading the tracker… 🕍</div></div>
+    </div>
+
+    <div class="lsub" id="l-markets" hidden>
+      <div class="banner b-wheat"><div class="bt"><b>Markets watch</b><small>Gold · silver · oil · wheat · dollar · stocks · bitcoin</small></div></div>
+      <div class="card bowed rev66"><div class="bow"></div><p class="script big">“A measure of wheat for a penny, and three measures of barley for a penny; and see thou hurt not the oil and the wine.”</p><p class="muted center">Revelation 6:6 · the third seal is about prices: a whole day's pay for a day's bread 🌾🛢️</p></div>
+      <div class="card fl mktsum" id="mktsum"><h2>💬 Today in plain words</h2><p class="muted">Reading the markets…</p></div>
+      <div id="mktlist"></div>
+      <div class="card fl">
+        <h2>🌸 How to read these</h2>
+        <p class="small"><b class="up">▲ green</b> means the price went up since yesterday's close, <b class="down">▼ red</b> means it went down. The % is how big the change is. A <b>🚩 big move</b> flag means it moved more than usual for one day. The little line is the last month, so you can see the trend at a glance.</p>
+        <p class="small">Prices refresh about every 10 minutes (bitcoin every minute). Markets close on weekends and holidays, so you'll see the last price then.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALERTS -->
+  <section class="pane" id="p-alerts">
+    <div class="banner b-roses"><div class="bt"><b>Phone alerts</b><small>Straight to my phone, even when the app is closed</small></div></div>
+    <div class="card fl">
+      <h2>🔔 What pings me</h2>
+      <ul class="ttl">
+        <li><b>🚨🚨🚨 Truly big breaking news</b> · nuclear, war declared, assassinations, huge quakes (7.5+), martial law, Temple Mount altar or sacrifice news and more</li>
+        <li><b>🚨 Israel sirens</b> · rockets, drones and other Red Alerts, with the towns and the time. Grouped together, never the same town twice in 15 minutes, and at most one ping every 3 minutes</li>
+      </ul>
+    </div>
+    <div class="card fl steps">
+      <h2>🎀 Set it up (2 minutes)</h2>
+      <ol>
+        <li>Install the free <b>ntfy</b> app <a class="pillbtn ghost" href="https://apps.apple.com/us/app/ntfy/id1625396347" target="_blank" rel="noopener">Get ntfy on the App Store</a></li>
+        <li>Open it and tap the <b>+</b></li>
+        <li>Type my private topic name below, leave the server as <b>ntfy.sh</b>, and tap <b>Subscribe</b></li>
+        <li>Say <b>Allow</b> to notifications</li>
+        <li>Tap <b>Send me a test</b> below and watch my phone light up 💗</li>
+      </ol>
+      <label class="lbl" for="ntopic">My private topic name</label>
+      <div class="row"><input id="ntopic" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="pinkwatch-…"><button class="mini" id="ncopy" type="button">Copy</button></div>
+      <button class="pillbtn" id="ntest" type="button">Send me a test 💌</button>
+      <p class="muted small center" id="nmsg">My topic name is in my texts. Keep it private: anyone who has it could see my alerts 🔒</p>
+    </div>
+    <button class="pillbtn ghost" data-go="home">Back to the station 🎀</button>
   </section>
 
   <!-- NEWS -->
@@ -108,6 +204,7 @@
   <!-- ME -->
   <section class="pane" id="p-logs">
     <div class="banner b-peonies"><div class="bt"><b>My testimony</b><small>“They overcame him by the blood of the Lamb, and by the word of their testimony”</small></div></div>
+    <button class="tile wide" data-go="alerts"><b>🔔</b><span>Phone alerts</span><small>Sirens + big breaking news, straight to my phone</small></button>
     <div class="card fl" id="testitl"></div>
     <div class="seg">
       <button data-log="signs" class="on">🌸 My signs</button>
@@ -158,6 +255,7 @@
 
 <nav class="tabs">
   <button data-go="home" class="on"><b>🎀</b>Station</button>
+  <button data-go="live"><b>🔴</b>Live<i class="dot" id="livedot"></i></button>
   <button data-go="news"><b>💌</b>News<i class="dot" id="newsdot"></i></button>
   <button data-go="prophecy"><b>📜</b>Prophecy</button>
   <button data-go="sky"><b>✨</b>Sky</button>
@@ -165,7 +263,8 @@
   <button data-go="logs"><b>🌸</b>Me</button>
 </nav>
 
-<script src="app.js?v=2"></script>
-<script src="more.js?v=2"></script>
+<script src="app.js?v=3"></script>
+<script src="more.js?v=3"></script>
+<script src="live.js?v=3"></script>
 </body>
 </html>
