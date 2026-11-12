@@ -48,6 +48,7 @@ function size() {
   W = cv.clientWidth; H = Math.round(W * .86);
   cv.style.height = H + 'px'; cv.width = W * DPR; cv.height = H * DPR;
   R = Math.min(W * .36, H * .43); CX = W * .55; CY = H * .5;
+  const pw = cv.parentNode.style; pw.setProperty('--cx', CX + 'px'); pw.setProperty('--cy', CY + 'px'); pw.setProperty('--r', R + 'px');
 }
 
 function level() {

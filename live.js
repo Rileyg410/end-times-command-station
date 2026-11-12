@@ -268,7 +268,7 @@ function topic() { return ($('#ntopic').value || '').trim(); }
       msg.textContent = r.ok ? 'Sent! Check my phone 💗 If nothing shows up, make sure I subscribed to this exact name in the ntfy app and allowed notifications.' : 'Hmm, that didn’t go through. Try again in a minute 🌸';
     } catch (e) { msg.textContent = 'Hmm, that didn’t go through. Check my internet and try again 🌸'; }
   });
-  if (m) setTimeout(() => $('.bell').click(), 50);
+  if (m) setTimeout(() => window.ETCS.go('alerts'), 50);
   if (/sirens/.test(h)) setTimeout(() => openLive('sirens'), 50);
 })();
 

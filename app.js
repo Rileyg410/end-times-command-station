@@ -119,6 +119,7 @@ function go(t) {
   $$('.pane').forEach(p => p.classList.toggle('on', p.id === 'p-' + t));
   $$('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.go === t));
   window.scrollTo({top: 0});
+  document.body.dataset.pane = t; window.dispatchEvent(new CustomEvent('etcs-go', {detail: t}));
   if (t === 'news') { store.set('etcs_seen', Math.floor(Date.now() / 1000)); $('#newsdot').classList.remove('on'); }
 }
 window.ETCS.go = go;
@@ -336,6 +337,7 @@ function bigcard() {
   if (!list.length) list = ((ME && ME.stories) || []).filter(s => milArr(s).length).slice(0, 3);
   $('#biglist').innerHTML = list.length ? list.map(s => `<a href="${esc(s.link)}" target="_blank" rel="noopener"><b>${esc(s.title)}</b><small>${esc(s.src)} · ${esc(ago(s.t))}</small></a>`).join('')
     : (ME || WD ? '<p class="muted">All quiet on the wall right now 🕊️</p>' : '<p class="muted">Loading the latest…</p>');
+  const nowS = Date.now() / 1000; $('#bigcard').hidden = !a.concat(b).some(s => nowS - s.t < 3 * 3600);
   const seen = store.get('etcs_seen', 0);
   const newHot = a.concat(b).some(s => (s.seen || s.t) > seen);
   $('#newsdot').classList.toggle('on', !!seen && newHot && !$('#p-news').classList.contains('on'));

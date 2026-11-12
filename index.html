@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>END TIMES COMMAND STATION</title>
-<meta name="theme-color" content="#ffb6d0">
+<meta name="theme-color" content="#fbf4f6">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Command Station">
@@ -14,35 +14,33 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="lace.css?v=1">
 </head>
 <body>
 <div class="lbtop" id="lbtop" hidden></div>
 <div class="glitter" aria-hidden="true"></div>
-<div class="sparkles" aria-hidden="true"></div>
+<div class="sparkles" aria-hidden="true"></div><div class="lace" aria-hidden="true"></div>
 
-<header class="hero">
-  <div class="heroimg">
-    <div class="bowtop"></div>
-    <button class="bell" data-go="alerts" aria-label="Phone alerts">🔔</button>
-    <button class="bell torch" data-go="blackout" aria-label="Blackout mode">🔦</button>
-    <h1>END TIMES<br>COMMAND STATION</h1>
-    <p class="script">Keeping watch in pink 💗</p>
-    <div class="clocks" id="clocks"></div>
-    <div class="hebday" id="hebday">✡ Finding today's Hebrew date…</div>
-  </div>
-</header>
+<header class="top"><div class="strand" id="strand" aria-hidden="true"></div><p class="brand">Command Station</p></header>
 
 <main>
   <!-- HOME -->
   <section class="pane on" id="p-home">
-    <div class="card bowed vision" id="vision"><div class="bow"></div>
+    <div class="greet" id="greet"><p class="ghello" id="ghello">Hello, Zo 🌸</p><p class="gdate" id="gdate"></p><div class="hebday" id="hebday">✡ Finding today's Hebrew date…</div><div class="clocks" id="clocks"></div></div>
+    <div class="card alertcard" hidden id="bigcard">
+      <h2><span>🚨</span> Breaking watch</h2>
+      <div id="biglist" class="minilist"><p class="muted">Loading the latest…</p></div>
+      <button class="pillbtn" data-go="news">See all the news 💌</button>
+    </div>
+    <div class="sirenflash" id="sirenflash" hidden></div>
+    <div class="card vision lacecard" id="vision">
       <h2 class="vt">My vision</h2>
       <p class="vsub">September 18, 2025 · the earth covered in fire, the gauge nearly full, Israel walled in fire</p>
       <div class="vwrap"><canvas id="vglobe" aria-label="Earth on fire"></canvas><p class="vload" id="vload">Lighting the globe… 🔥</p></div>
       <p class="vlevel" id="vlevel">Reading the fire…</p>
       <p class="vinfo" id="vinfo"></p>
       <p class="vtap" id="vtap"></p>
-      <div class="vbtns"><button class="pillbtn" id="vIsrael">🇮🇱 Focus on Israel</button><button class="pillbtn ghost" id="vEarth">🌍 Whole earth</button></div>
+      <div class="vbtns"><button class="pillbtn" id="vIsrael">🇮🇱 Focus on Israel</button><button class="pillbtn ghost" id="vEarth">🌍 Whole earth</button><button class="pillbtn ghost" id="vRep">▶ Replay</button></div>
       <div class="vsheet" id="vsheet" hidden>
         <div class="vsh"><b>🔥 Israel · a wall of fire</b><button id="vclose" aria-label="Close">✕</button></div>
         <p class="script vz">“For I, saith the LORD, will be unto her a wall of fire round about.” <small>Zechariah 2:5</small></p>
@@ -58,65 +56,95 @@
         <input type="range" id="vday" min="0" max="1" value="1" step="1" aria-label="Replay day">
         <div class="vends"><span>Sept 18, 2025</span><span>Today</span></div>
       </div>
-      <p class="muted small vhow">Drag to spin the earth · tap a fire to see what it is · tap Israel for the watch. The fire glows where quakes (USGS), Israel sirens, military news and 🚨 big stories hit in the last 24 hours. The gauge compares the last 24 hours with the days around my vision (the real quakes of September 18 and 19, 2025, when an M7.8 hit Kamchatka, plus an estimated wartime day of sirens and news). Its tick marks that September 18, 2025 level, nearly full.</p>
+      <details class="vhowd"><summary>How the fire reads ✨</summary><p class="muted small vhow">Drag to spin the earth · tap a fire to see what it is · tap Israel for the watch. The fire glows where quakes (USGS), Israel sirens, military news and 🚨 big stories hit in the last 24 hours. The gauge compares the last 24 hours with the days around my vision (the real quakes of September 18 and 19, 2025, when an M7.8 hit Kamchatka, plus an estimated wartime day of sirens and news). Its tick marks that September 18, 2025 level, nearly full.</p></details>
     </div>
-    <div class="card alertcard" id="bigcard">
-      <h2><span>🚨</span> Breaking watch</h2>
-      <div id="biglist" class="minilist"><p class="muted">Loading the latest…</p></div>
-      <button class="pillbtn" data-go="news">See all the news 💌</button>
-    </div>
-
     <button class="card fl thmini" id="thmini" data-go="threads">
       <h2><span>🧵</span> Today's threads</h2>
       <div class="thm"><p class="muted small">Lining up today…</p></div>
     </button>
+    <div class="rooms">
+      <button class="room" data-go="watch"><i>👁️</i><b>Watch</b><small>News · Israel · live</small></button>
+      <button class="room" data-go="word"><i>📖</i><b>Word</b><small>Bible · Walk · Hebrew</small></button>
+      <button class="room" data-go="signs"><i>✨</i><b>Signs</b><small>Sky · quakes · figs</small></button>
+      <button class="room" data-go="me"><i>🌸</i><b>Me</b><small>Testimony · prayer</small></button>
+    </div>
+    <p class="signoff">Lift up your heads 💗</p>
+  </section>
 
-    <button class="bobadge" id="bobadge" data-go="blackout">🔦 Saving for blackout… <small>keep the app open a moment</small></button>
-    <button class="lbmini" id="lbmini" hidden>🙋‍♀️ I'm still here</button>
-
+  <section class="pane room-p" id="p-watch">
+    <div class="roomhead"><div class="rgem">👁️</div><h2>Watch</h2><p class="script">“Watch ye therefore, and pray always”</p><small>Luke 21:36</small></div>
+    <div class="rlist">
+      <button class="row" data-go="news" data-deskgo="world"><i>🚨</i><span><b>Breaking &amp; world watch</b><small>The biggest stories, live</small></span><em>›</em></button>
+      <button class="row" data-go="news" data-deskgo="mideast"><i>🇮🇱</i><span><b>Israel &amp; Mideast</b><small>Iran, Lebanon, Gaza, the Gulf</small></span><em>›</em></button>
+      <button class="row" data-go="news" data-deskgo="ezekiel"><i>⚔️</i><span><b>Ezekiel 38</b><small>Russia, Iran, Turkey and allies</small></span><em>›</em></button>
+      <button class="row" data-go="videos"><i>📺</i><span><b>Watchmen videos</b><small>The newest uploads</small></span><em>›</em></button>
+    </div>
+    <h3 class="sect">Live from Jerusalem</h3>
+    <div id="livebox"><div class="livestrip" id="livestrip">
+      <button class="tile camtile" data-open="cam"><span class="lp">● LIVE</span><b>📹</b>Western Wall cam</button>
+      <button class="tile" data-open="sirens" id="t-sirens"><b>🚨</b><span>Sirens</span><small>Checking…</small></button>
+      <button class="tile" data-open="markets" id="t-mkt"><b>💰</b><span>Markets</span><small>Loading…</small></button>
+    </div>
+    <button class="tile wide" data-open="temple" id="t-temple"><b>🕍</b><span>Third Temple tracker</span><small>Watching the Mount…</small></button>
+    <button class="tile wide" data-go="mark" id="t-mark"><b>💳</b><span>Mark of the beast tracker</span><small>Watching the system…</small></button></div>
     <div class="card elijah" id="elijah">
       <h2><span class="eflame">🔥</span> Elijah watch</h2>
       <p class="script ev">“Behold, I will send you Elijah the prophet before the coming of the great and dreadful day of the LORD.” <small>Malachi 4:5</small></p>
       <div id="elist"><p class="small equiet">Checking…</p></div>
       <p class="tiny muted">Lights up only for news of someone publicly claiming to be Elijah or one of the two witnesses (Revelation 11), or something unusual at Mount Carmel or the Mount of Olives. My phone gets a 🔥 ping when one appears.</p>
     </div>
-
     <button class="card psmini" id="psmini" data-go="peace">
       <h2><span>☮️</span> Peace and safety meter</h2>
       <div class="psm"><p class="muted small">Reading the headlines…</p></div>
       <p class="script pv">“For when they shall say, Peace and safety; then sudden destruction cometh upon them.” <small>1 Thessalonians 5:3</small></p>
     </button>
+  </section>
 
-    <div class="card verse bowed" id="versebox"><div class="bow"></div><div id="verse"></div></div>
-
-
-    <div class="sirenflash" id="sirenflash" hidden></div>
-    <h3 class="sect">Live from Jerusalem</h3>
-    <div class="livestrip" id="livestrip">
-      <button class="tile camtile" data-open="cam"><span class="lp">● LIVE</span><b>📹</b>Western Wall cam</button>
-      <button class="tile" data-open="sirens" id="t-sirens"><b>🚨</b><span>Sirens</span><small>Checking…</small></button>
-      <button class="tile" data-open="markets" id="t-mkt"><b>💰</b><span>Markets</span><small>Loading…</small></button>
+  <section class="pane room-p" id="p-word">
+    <div class="roomhead"><div class="rgem">📖</div><h2>Word</h2><p class="script">“Thy word is a lamp unto my feet, and a light unto my path”</p><small>Psalm 119:105</small></div>
+    <div class="rlist">
+      <button class="row" data-go="blackout" data-scrollto="bible"><i>📖</i><span><b>The Holy Bible</b><small>King James · works with no internet</small></span><em>›</em></button>
+      <button class="row" data-go="threads"><i>🧵</i><span><b>Threads</b><small>How my days line up</small></span><em>›</em></button>
+      <button class="row" data-go="prophecy"><i>📜</i><span><b>Prophecy timeline</b><small>Daniel 12 · watch dates · feasts</small></span><em>›</em></button>
+      <button class="row" data-go="blackout" data-scrollto="gospel"><i>✝️</i><span><b>How to be saved</b><small>To share with anyone</small></span><em>›</em></button>
     </div>
-    <button class="tile wide" data-open="temple" id="t-temple"><b>🕍</b><span>Third Temple tracker</span><small>Watching the Mount…</small></button>
-    <button class="tile wide" data-go="mark" id="t-mark"><b>💳</b><span>Mark of the beast tracker</span><small>Watching the system…</small></button>
-
+    <div class="card jewel" id="jewel"></div>
+    <div class="card verse bowed" id="versebox"><div class="bow"></div><div id="verse"></div></div>
     <h3 class="sect">Walk with Jesus</h3>
     <div class="card fl walk" id="walk"></div>
-
     <h3 class="sect">Hebrew word of the day</h3>
     <div class="card bowed hw" id="hword"><div class="bow"></div></div>
-
+    <div class="card fl feast" id="feast"><h2>🕎 Next biblical feast</h2><p class="muted">Checking God's calendar…</p></div>
     <h3 class="sect">My watch dates</h3>
     <div id="watch"></div>
+  </section>
 
-    <div class="card fl feast" id="feast"><h2>🕎 Next biblical feast</h2><p class="muted">Checking God's calendar…</p></div>
-
-    <h3 class="sect">My testimony days</h3>
-    <div class="grid2" id="testi"></div>
-
+  <section class="pane room-p" id="p-signs">
+    <div class="roomhead"><div class="rgem">✨</div><h2>Signs</h2><p class="script">“And there shall be signs in the sun, and in the moon, and in the stars”</p><small>Luke 21:25</small></div>
+    <div class="rlist">
+      <button class="row" data-go="sky"><i>🌌</i><span><b>Sky &amp; space watch</b><small>Sun, moon, eclipses</small></span><em>›</em></button>
+      <button class="row" data-go="sky" data-scrollto="qsec"><i>🌍</i><span><b>Earthquakes, live</b><small>Every 4.5+ this week</small></span><em>›</em></button>
+      <button class="row" data-go="news" data-deskgo="signs"><i>🌿</i><span><b>Fig tree &amp; signs news</b><small>Figs, blooms, strange skies</small></span><em>›</em></button>
+      <button class="row" data-go="home" data-replay="1"><i>🔥</i><span><b>My vision replay</b><small>The fire since Sept 18, 2025</small></span><em>›</em></button>
+      <button class="row" data-go="logs" data-logto="signs"><i>🌸</i><span><b>My signs log</b><small>What I have seen</small></span><em>›</em></button>
+    </div>
     <div class="card fl" id="moonmini"><h2>🌙 Tonight's sky</h2><p class="muted">Looking up…</p></div>
     <div class="card fl quakemini" id="quakemini"><h2>🌍 Earth today</h2><p class="muted">Listening to the earth…</p></div>
-    <p class="signoff">Lift up your heads 💗</p>
+  </section>
+
+  <section class="pane room-p" id="p-me">
+    <div class="roomhead"><div class="rgem">🌸</div><h2>Me</h2><p class="script">“They overcame him by the blood of the Lamb, and by the word of their testimony”</p><small>Revelation 12:11</small></div>
+    <div class="rlist">
+      <button class="row" data-go="logs" data-logto="signs"><i>🕊️</i><span><b>My testimony</b><small>Timeline · Left behind · check-in</small></span><em>›</em></button>
+      <button class="row" data-go="logs" data-logto="prayer"><i>🙏</i><span><b>Prayer list</b><small>Israel · family · requests</small></span><em>›</em></button>
+      <button class="row" data-go="alerts"><i>🔔</i><span><b>Phone alerts</b><small>Sirens + big news to my phone</small></span><em>›</em></button>
+      <button class="row" data-go="blackout"><i>🔦</i><span><b>Blackout mode</b><small>Everything kept on my phone</small></span><em>›</em></button>
+    </div>
+    <button class="bobadge" id="bobadge" data-go="blackout">🔦 Saving for blackout… <small>keep the app open a moment</small></button>
+    <button class="lbmini" id="lbmini" hidden>🙋‍♀️ I'm still here</button>
+    <div class="card still" id="still"></div>
+    <h3 class="sect">My testimony days</h3>
+    <div class="grid2" id="testi"></div>
   </section>
 
   <!-- LIVE -->
@@ -504,7 +532,7 @@
   </section>
 </main>
 
-<nav class="tabs">
+<nav class="tabs" hidden>
   <button data-go="home" class="on"><b>🎀</b>Station</button>
   <button data-go="live"><b>🔴</b>Live<i class="dot" id="livedot"></i></button>
   <button data-go="news"><b>💌</b>News<i class="dot" id="newsdot"></i></button>
@@ -513,14 +541,16 @@
   <button data-go="videos"><b>📺</b>Videos</button>
   <button data-go="logs"><b>🌸</b>Me</button>
 </nav>
+<div class="pearlnav" id="pearlnav"><div class="parc"><button data-go="home"><i>🏠</i><span>Home</span></button><button data-go="watch"><i>👁️</i><span>Watch</span></button><button data-go="word"><i>📖</i><span>Word</span></button><button data-go="signs"><i>✨</i><span>Signs</span></button><button data-go="me"><i>🌸</i><span>Me</span></button></div><button class="pearl" id="pearl" aria-label="Menu"></button></div>
 
-<script src="app.js?v=7"></script>
+<script src="app.js?v=8"></script>
 <script src="more.js?v=4"></script>
-<script src="live.js?v=5"></script>
-<script src="vision.js?v=3"></script>
+<script src="live.js?v=6"></script>
+<script src="vision.js?v=4"></script>
 <script src="blackout.js?v=1"></script>
 <script src="mark.js?v=1"></script>
 <script src="leftbehind.js?v=2"></script>
-<script src="batch4.js?v=2"></script>
+<script src="batch4.js?v=3"></script>
+<script src="rooms.js?v=1"></script>
 </body>
 </html>

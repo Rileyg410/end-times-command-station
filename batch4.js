@@ -44,7 +44,7 @@ async function loadThreads() { const d = await J('threads.json'); if (d) TH = d;
 
 // =============================================================== RESHAPING STATION
 const home = $('#p-home');
-const ORIG = Array.from(home.children);
+const ORIG = Array.from(home.children), homes = new Map();
 const banner = document.createElement('div'); banner.id = 'rsbanner'; banner.className = 'rsbanner'; banner.hidden = true;
 const isr = document.createElement('div'); isr.id = 'rsisrael'; isr.className = 'card fl rsisrael'; isr.hidden = true;
 home.prepend(banner); home.insertBefore(isr, banner.nextSibling);
@@ -83,27 +83,29 @@ function decide() {
 }
 
 const LOOK = {
-  calm: {cls: 'rs-calm', e: '🕊️', t: 'A calm day', s: 'Resting in His word first today', top: ['#versebox', 'H:Walk with Jesus', '#walk', '#thmini']},
-  israel: {cls: 'rs-israel', e: '🇮🇱', t: 'Israel is heating up', s: '', top: ['#rsisrael', '#vision', '#sirenflash', 'H:Live from Jerusalem', '#livestrip', '#bigcard']},
+  calm: {cls: 'rs-calm', e: '🕊️', t: 'A calm day', s: 'Resting in His word first today', top: []},
+  israel: {cls: 'rs-israel', e: '🇮🇱', t: 'Israel is heating up', s: '', top: ['#rsisrael', '#vision', '#sirenflash', '#livebox', '#bigcard']},
   elijah: {cls: 'rs-elijah', e: '🔥', t: 'Elijah watch lit up', s: '', top: ['#elijah', '#bigcard']},
   quake: {cls: 'rs-quake', e: '🌍', t: 'The earth is shaking', s: '', top: ['#quakemini', '#vision', '#bigcard']},
   peace: {cls: 'rs-peace', e: '☮️', t: 'Peace and safety is spiking', s: '', top: ['#psmini', '#bigcard']},
 };
 function pick(sel) {
-  if (sel.startsWith('H:')) return ORIG.find(n => n.tagName === 'H3' && n.textContent.trim() === sel.slice(2));
-  return sel === '#rsisrael' ? isr : ORIG.find(n => n.matches && n.matches(sel));
+  return sel === '#rsisrael' ? isr : document.querySelector(sel);
 }
 function layout(st, usual) {
   const L = LOOK[st];
   document.body.classList.remove(...Object.values(LOOK).map(l => l.cls));
+  homes.forEach((ph, el) => { ph.parentNode.insertBefore(el, ph); ph.remove(); }); homes.clear();
   const top = usual ? [] : L.top.map(pick).filter(Boolean);
+  top.forEach(n => { if (n !== isr && !ORIG.includes(n)) { const ph = document.createComment('rs'); n.parentNode.insertBefore(ph, n); homes.set(n, ph); } });
   if (!usual) document.body.classList.add(L.cls);
   isr.hidden = usual || st !== 'israel';
-  const order = [banner, ...top, ...ORIG.filter(n => !top.includes(n))];
-  if (!top.includes(isr)) order.splice(1, 0, isr);
+  const greet = ORIG.find(n => n.id === 'greet');
+  const order = [greet, banner, ...top, ...ORIG.filter(n => n !== greet && !top.includes(n))];
+  if (!top.includes(isr)) order.splice(2, 0, isr);
   order.forEach(n => home.appendChild(n));
   // banner
-  banner.hidden = false;
+  banner.hidden = st === 'calm';
   banner.className = 'rsbanner ' + (usual ? 'usual' : L.cls);
   banner.innerHTML = usual
     ? `<span>${L.e} ${esc(L.t)}</span><button id="rsback">Show it ✨</button>`
