@@ -13,7 +13,7 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 <div class="glitter" aria-hidden="true"></div>
@@ -74,6 +74,12 @@
       <p class="tiny muted">Lights up only for news of someone publicly claiming to be Elijah or one of the two witnesses (Revelation 11), or something unusual at Mount Carmel or the Mount of Olives. My phone gets a 🔥 ping when one appears.</p>
     </div>
 
+    <button class="card psmini" id="psmini" data-go="peace">
+      <h2><span>☮️</span> Peace and safety meter</h2>
+      <div class="psm"><p class="muted small">Reading the headlines…</p></div>
+      <p class="script pv">“For when they shall say, Peace and safety; then sudden destruction cometh upon them.” <small>1 Thessalonians 5:3</small></p>
+    </button>
+
     <div class="card verse bowed" id="versebox"><div class="bow"></div><div id="verse"></div></div>
 
 
@@ -85,6 +91,7 @@
       <button class="tile" data-open="markets" id="t-mkt"><b>💰</b><span>Markets</span><small>Loading…</small></button>
     </div>
     <button class="tile wide" data-open="temple" id="t-temple"><b>🕍</b><span>Third Temple tracker</span><small>Watching the Mount…</small></button>
+    <button class="tile wide" data-go="mark" id="t-mark"><b>💳</b><span>Mark of the beast tracker</span><small>Watching the system…</small></button>
 
     <h3 class="sect">Walk with Jesus</h3>
     <div class="card fl walk" id="walk"></div>
@@ -162,6 +169,48 @@
         <p class="small">Prices refresh about every 10 minutes (bitcoin every minute). Markets close on weekends and holidays, so you'll see the last price then.</p>
       </div>
     </div>
+  </section>
+
+  <!-- MARK OF THE BEAST -->
+  <section class="pane" id="p-mark">
+    <div class="banner b-roses"><div class="bt"><b>Mark of the beast tracker</b><small>Digital ID · digital money · palm &amp; face pay · chips · social credit · cashless</small></div></div>
+    <div class="card bowed rev13"><div class="bow"></div><p class="script big">“And he causeth all, both small and great, rich and poor, free and bond, to receive a mark in their right hand, or in their foreheads: And that no man might buy or sell, save he that had the mark, or the name of the beast, or the number of his name.”</p><p class="muted center">Revelation 13:16–17</p></div>
+    <div class="card fl mwhy">
+      <h2>💡 What I'm watching</h2>
+      <p class="small">Buying and selling only with permission needs a few pieces working together. These are the pieces being built right now:</p>
+      <ul class="ttl">
+        <li><b>🪪 Digital ID</b> · one government ID that lives on your phone and gets checked to open a bank account, get a job, see a doctor, travel or go online.</li>
+        <li><b>💳 Digital money (CBDCs)</b> · money issued straight by a country's central bank as a digital balance instead of cash. Because the bank runs it, every payment can be seen, and it can be “programmed” with rules about where, when and on what it can be spent.</li>
+        <li><b>✋ Palm &amp; face pay</b> · paying, boarding or entering by scanning your hand or face. Your body becomes the card.</li>
+        <li><b>🔬 Chips &amp; implants</b> · payment chips under the skin of the hand, and brain implants like Neuralink.</li>
+        <li><b>📊 Social credit</b> · scores on how people behave, which decide what they're allowed to do, buy or travel to.</li>
+        <li><b>💵 Cashless</b> · shops, countries and banks dropping cash. With no cash, every purchase has to go through the system.</li>
+      </ul>
+    </div>
+    <h3 class="sect">Digital money around the world</h3>
+    <div class="card fl" id="mcbdc"></div>
+    <h3 class="sect">Country by country in the news</h3>
+    <div class="card mcos" id="mcountries"></div>
+    <h3 class="sect">Latest news</h3>
+    <div class="chips" id="mchips"></div>
+    <p class="sub" id="msub"></p>
+    <div id="mlist"><div class="empty">Loading the tracker… 💳</div></div>
+  </section>
+
+  <!-- PEACE AND SAFETY -->
+  <section class="pane" id="p-peace">
+    <div class="banner b-sunrise"><div class="bt"><b>Peace and safety meter</b><small>Peace talk · peace deals · ceasefires · normalization · covenants</small></div></div>
+    <div class="card bowed"><div class="bow"></div><p class="script big">“For when they shall say, Peace and safety; then sudden destruction cometh upon them, as travail upon a woman with child; and they shall not escape.”</p><p class="muted center">1 Thessalonians 5:3</p></div>
+    <div class="card fl psmeter" id="psmeter"><p class="muted">Reading the headlines…</p></div>
+    <div class="card fl">
+      <h2>🌸 How the meter works</h2>
+      <p class="small">Every 10 minutes it counts the world's headlines from the last 24 hours that say <b>“peace and security”</b> or <b>“peace and safety,”</b> or that are about <b>peace deals, ceasefires, normalization</b> (like the Abraham Accords) or <b>covenants, treaties and security pacts</b>. Then it compares today with a usual day from the last two weeks.</p>
+      <p class="small"><b>Calm</b> is about a usual day. <b>Rising</b> is a quarter more than usual. At <b>1.6×</b> or more it's a <b>spike</b> and the meter glows red 🔴. Daniel 9:27 speaks of a covenant confirmed with many, so anything about a covenant or peace deal with Israel gets its own 🇮🇱 tag.</p>
+      <p class="small">My phone gets a ☮️ ping only for a huge spike (2.5× the usual day) or a major Israel peace, normalization or covenant deal actually being signed or agreed.</p>
+    </div>
+    <h3 class="sect">The latest peace headlines</h3>
+    <div class="chips" id="pchips"></div>
+    <div id="plist"><div class="empty">Loading… 🕊️</div></div>
   </section>
 
   <!-- BLACKOUT -->
@@ -258,6 +307,7 @@
   <!-- PROPHECY -->
   <section class="pane" id="p-prophecy">
     <div class="banner b-sunrise"><div class="bt"><b>Prophecy timeline</b><small>Daniel 12 · my watch dates · God's feasts</small></div></div>
+    <div class="grid2 protiles"><button class="tile" data-go="mark"><b>💳</b><span>Mark of the beast</span></button><button class="tile" data-go="peace"><b>☮️</b><span>Peace and safety</span></button></div>
     <div class="card fl" id="dantl"></div>
     <h3 class="sect">My watch dates</h3>
     <div class="card" id="watchtl"></div>
@@ -353,5 +403,6 @@
 <script src="live.js?v=5"></script>
 <script src="vision.js?v=2"></script>
 <script src="blackout.js?v=1"></script>
+<script src="mark.js?v=1"></script>
 </body>
 </html>

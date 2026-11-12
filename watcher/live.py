@@ -358,8 +358,9 @@ def run_all(http_get, load_json, save_json, now_ts, central_time, trusted, merge
                      ("temple", lambda: temple(http_get, load_json, save_json, now_ts, central_time, trusted, merge)),
                      ("markets", lambda: markets(save_json, load_json, now_ts)),
                      ("elijah", lambda: __import__("elijah").run(http_get, load_json, save_json, now_ts, central_time, merge, ntfy)),
+                     ("beast", lambda: __import__("beast").run(http_get, load_json, save_json, now_ts, central_time, merge, ntfy, trusted)),
                      ("push", lambda: push_breaking(load_json, save_json, now_ts, big_rx, big_not))):
-        if os.environ.get("FAST") == "1" and name in ("cams", "markets", "elijah"):
+        if os.environ.get("FAST") == "1" and name in ("cams", "markets", "elijah", "beast"):
             continue
         try:
             fn()
