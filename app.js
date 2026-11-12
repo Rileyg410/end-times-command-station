@@ -121,6 +121,7 @@ function go(t) {
   window.scrollTo({top: 0});
   if (t === 'news') { store.set('etcs_seen', Math.floor(Date.now() / 1000)); $('#newsdot').classList.remove('on'); }
 }
+window.ETCS.go = go;
 document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) go(b.dataset.go === 'quakes' ? 'sky' : b.dataset.go); });
 
 // ---------------------------------------------------------------- clocks

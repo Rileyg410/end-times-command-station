@@ -7,6 +7,7 @@ Every 60 seconds:
   * writes loop.json so the 10-minute fallback sweep knows the loop is alive and stays out of the way
 Standard library only.
 """
+import hashlib
 import json
 import os
 import subprocess
@@ -79,6 +80,56 @@ def publish_new(new):
     return sent
 
 
+# ---------------------------------------------------------------- Left behind mode check-ins
+# Her own phone posts "<days>.<token>" to this ntfy topic each time she opens the station.
+# Only a token whose sha256 matches CI_HASH counts. checkin.json is written ONLY after a
+# successful poll, so a glitch never makes her check-in look stale (the app also needs `checked`
+# to be fresh before it will flip). `from` restarts after any gap longer than 10 hours, because
+# ntfy keeps messages for 12 hours: a check-in made while the loop was down is never counted as missing.
+CI_TOPIC = os.environ.get("CI_TOPIC", "etcs-checkin-33008373")
+CI_HASH = "de3d777508cdc6bd5ff4fa7c86bf5f56695fe2de13b6fb98f53aa962a56a553a"
+
+
+def checkins():
+    path = os.path.join(DATA, "checkin.json")
+    try:
+        with open(path) as fh:
+            st = json.load(fh)
+    except Exception:
+        st = {}
+    try:
+        req = urllib.request.Request(f"https://ntfy.sh/{CI_TOPIC}/json?poll=1&since=12h", headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            body = r.read().decode("utf-8", "replace")
+    except Exception as e:
+        print("checkin poll error", type(e).__name__, e)
+        return
+    now = int(time.time())
+    last, days = int(st.get("last") or 0), int(st.get("days") or 7)
+    for line in body.splitlines():
+        try:
+            m = json.loads(line)
+        except Exception:
+            continue
+        if m.get("event") != "message":
+            continue
+        d, _, tok = (m.get("message") or "").strip().partition(".")
+        if not d.isdigit() or hashlib.sha256(tok.encode()).hexdigest() != CI_HASH:
+            continue
+        t = int(m.get("time") or 0)
+        if t > now + 300:
+            continue
+        if t >= last:
+            last = t
+            days = max(1, min(60, int(d)))
+    prev = int(st.get("checked") or 0)
+    frm = int(st.get("from") or 0)
+    if not prev or now - prev > 36000 or not frm:
+        frm = now
+    with open(path, "w") as fh:
+        json.dump({"last": last, "days": days, "from": frm, "checked": now}, fh)
+
+
 def git(*a):
     return subprocess.run(["git", *a], cwd=DATA, capture_output=True, text=True, timeout=60)
 
@@ -120,6 +171,7 @@ def main():
             if add:
                 new[f] = add
         sent = publish_new(new) if new else 0
+        checkins()
         with open(os.path.join(DATA, "loop.json"), "w") as fh:
             json.dump({"t": int(time.time()), "tick": tick}, fh)
         ok = push()

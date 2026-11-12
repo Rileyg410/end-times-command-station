@@ -13,9 +13,10 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=7">
+<link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
+<div class="lbtop" id="lbtop" hidden></div>
 <div class="glitter" aria-hidden="true"></div>
 <div class="sparkles" aria-hidden="true"></div>
 
@@ -66,6 +67,7 @@
     </div>
 
     <button class="bobadge" id="bobadge" data-go="blackout">🔦 Saving for blackout… <small>keep the app open a moment</small></button>
+    <button class="lbmini" id="lbmini" hidden>🙋‍♀️ I'm still here</button>
 
     <div class="card elijah" id="elijah">
       <h2><span class="eflame">🔥</span> Elijah watch</h2>
@@ -262,6 +264,93 @@
     <div class="card" id="boquakes"><h2>🌍 Last quakes I saved</h2></div>
   </section>
 
+  <!-- LEFT BEHIND -->
+  <section class="pane" id="p-left">
+    <div class="banner b-milky"><div class="bt"><b>If you're reading this…</b><small>I've gone to be with Jesus 🕊️</small></div></div>
+    <div class="card bowed lbhello"><div class="bow"></div>
+      <p class="script big">If you're reading this, I've gone to be with Jesus.</p>
+      <div id="lbday"></div>
+      <p>Please don't be scared, and please don't stop reading. I loved you enough to leave this here for you. I kept watch on this phone every day, and if it changed itself into this page, it means I stopped checking in, because I've been caught up to meet my Lord. And I want you to come too. 💗</p>
+    </div>
+
+    <div class="card fl gospel">
+      <h2>🎺 What happened</h2>
+      <p>Jesus came for His people, just like He promised. Millions of us were gone in a moment. That's the rapture. It isn't aliens, it isn't a government experiment, and it isn't the end of the world. It's God keeping His word.</p>
+      <p class="gv">“For the Lord himself shall descend from heaven with a shout, with the voice of the archangel, and with the trump of God: and the dead in Christ shall rise first: Then we which are alive and remain shall be caught up together with them in the clouds, to meet the Lord in the air: and so shall we ever be with the Lord.” <small><a href="#" data-bjump="51.4.16">1 Thessalonians 4:16–17</a></small></p>
+      <p class="gv">“We shall not all sleep, but we shall all be changed, In a moment, in the twinkling of an eye, at the last trump…” <small><a href="#" data-bjump="45.15.51">1 Corinthians 15:51–52</a></small></p>
+    </div>
+
+    <div class="card fl gospel">
+      <h2>❤️ It's not too late for you</h2>
+      <p>Hear me: <b>you can still be saved.</b> God hasn't given up on you. Jesus died on the cross for your sins and rose again, and He is still saving people right now. You can't earn it, and you don't have to clean yourself up first. It's by grace, through faith in <b>Jesus alone</b>. Not works. Just come to Him.</p>
+      <p class="gv">“That if thou shalt confess with thy mouth the Lord Jesus, and shalt believe in thine heart that God hath raised him from the dead, thou shalt be saved… For whosoever shall call upon the name of the Lord shall be saved.” <small><a href="#" data-bjump="44.10.9">Romans 10:9–13</a></small></p>
+      <p>You can pray something like this, right now, wherever you are:</p>
+      <div class="prayer"><p>Jesus, I know I'm a sinner and I can't save myself. I believe You are the Son of God, that You died on the cross for my sins and rose from the dead. I'm sorry, and I turn to You. Please forgive me and save me. Be my Lord and my Savior. I'm Yours now. In Your name, amen. 💗</p></div>
+      <p>If you meant it, you are His, and nobody can snatch you out of His hand. I'll see you again. 🤍</p>
+    </div>
+
+    <div class="card fl gospel">
+      <h2>⏳ What's coming next</h2>
+      <p>I spent a long time studying this so I could tell you plainly:</p>
+      <ul class="lbl">
+        <li><b>A man will rise with all the answers.</b> The Bible calls him the Antichrist. He'll look like the one who can fix this mess and bring the world together.</li>
+        <li><b>He'll confirm a peace covenant with Israel</b> for seven years. That's the true start of the last seven years, Daniel's 70th week (<a href="#" data-bjump="26.9.27">Daniel 9:27</a>).</li>
+        <li><b>A temple in Jerusalem.</b> Sacrifices will start again. In the middle of the seven years he'll stop them and set himself up in the temple as God (<a href="#" data-bjump="39.24.15">Matthew 24:15</a>, <a href="#" data-bjump="52.2.4">2 Thessalonians 2:4</a>).</li>
+        <li><b>Two witnesses</b> will preach in Jerusalem for 1,260 days, dressed in sackcloth, with power from God (<a href="#" data-bjump="65.11.3">Revelation 11</a>).</li>
+        <li><b>Judgments will pour out</b>: the seals, the trumpets and the bowls. War, famine, plagues, earthquakes and signs in the sky (<a href="#" data-bjump="65.6.1">Revelation 6–19</a>).</li>
+        <li><b>Then Jesus comes back</b> on a white horse, as King of kings, and He wins (<a href="#" data-bjump="65.19.11">Revelation 19</a>).</li>
+      </ul>
+    </div>
+
+    <div class="card fl">
+      <h2>📅 Where you are in the seven years</h2>
+      <div id="lbtl"></div>
+    </div>
+
+    <div class="card fl gospel lbwarn">
+      <h2>🚫 Do NOT take the mark</h2>
+      <p>There will come a time when you can't buy or sell without his mark in your right hand or your forehead. Whatever it costs you, <b>don't take it.</b> Not to eat, not to keep your job, not for anything. Taking it is choosing him over Jesus, and there's no coming back from it.</p>
+      <p class="gv">“If any man worship the beast and his image, and receive his mark in his forehead, or in his hand, The same shall drink of the wine of the wrath of God…” <small><a href="#" data-bjump="65.14.9">Revelation 14:9–11</a></small></p>
+      <h4>🛡️ Hold on, even unto death</h4>
+      <p>It might cost you everything. Hold on to Jesus anyway. He's worth it, and this life is short next to forever with Him.</p>
+      <p class="gv">“Be thou faithful unto death, and I will give thee a crown of life.” <small><a href="#" data-bjump="65.2.10">Revelation 2:10</a></small></p>
+      <p class="gv">“And they overcame him by the blood of the Lamb, and by the word of their testimony; and they loved not their lives unto the death.” <small><a href="#" data-bjump="65.12.11">Revelation 12:11</a></small></p>
+    </div>
+
+    <div class="card fl gospel">
+      <h2>🌸 What to do now</h2>
+      <ul class="lbl">
+        <li><b>Find other believers.</b> People who are reading their Bibles and calling on Jesus. Stick together and pray together.</li>
+        <li><b>Keep the Bible close.</b> The whole King James Bible is saved right here on this phone and works with no internet. Don't lose it.</li>
+        <li><b>Pray.</b> Talk to Jesus every day, out loud or in your heart. He hears you.</li>
+        <li><b>Don't trust the “peace and safety.”</b> When the world says everything is finally fixed, that's when sudden destruction comes (<a href="#" data-bjump="51.5.3">1 Thessalonians 5:3</a>).</li>
+        <li><b>Don't take the mark.</b> No matter what.</li>
+        <li><b>Watch for the two witnesses</b> in Jerusalem. When you see them, you'll know this is all true.</li>
+        <li><b>Keep watch with my station.</b> Tap the tabs at the bottom: the news, Israel's sirens, the Third Temple tracker, the Mark of the beast tracker, the Peace and safety meter and the Elijah watch. Follow the signs.</li>
+      </ul>
+      <div class="btnrow"><button class="pillbtn" data-go="home">🎀 Open my station</button><button class="pillbtn ghost" data-go="mark">💳 Mark tracker</button></div>
+    </div>
+
+    <div class="card fl gospel">
+      <h2>📖 Where to start reading</h2>
+      <p>Start with the <b>Gospel of John</b>. It shows you who Jesus is. Then read <b>Revelation</b>, so you know what's happening and how it ends. Spoiler: Jesus wins. 👑</p>
+      <div class="btnrow"><a class="pillbtn" href="#" data-bjump="42.1.1">📖 Read John</a><a class="pillbtn ghost" href="#" data-bjump="65.1.1">📜 Read Revelation</a></div>
+    </div>
+
+    <div class="card fl gospel">
+      <h2>🕊️ My testimony</h2>
+      <p>God wove so many threads through my life to get me ready for this. While I was carrying Elliana, an iron pill bottle fell. On September 18, 2025, He gave me a vision: the whole earth covered in moving fire, a gauge beside it nearly full, and Israel surrounded by fire like a wall. On April 13, 2026, I asked Jesus to make something else fall if it was Him, and the kitchen clock came down. Then came white-light dreams, mine and Riley's, two days apart. And one day Elliana handed me a toy block that said <b>WATCH</b>. So I watched. And He came. 🤍</p>
+      <button class="pillbtn" data-go="logs">🌸 My whole testimony timeline + signs log</button>
+    </div>
+
+    <div class="card bowed lblove"><div class="bow"></div>
+      <h2>💌 To the ones I love</h2>
+      <p><b>Riley</b>, my love, thank you for walking this road with me and believing with me. <b>Elliana</b>, my sweet girl, you were always my greatest gift, and Jesus loves you even more than I do. <b>Tamm</b> and <b>Nanny</b>, thank you for every prayer, every Bible study and every bit of love you poured into me.</p>
+      <p>If any of you are reading this and you're still here, it isn't too late. Run to Jesus. I'm waiting for you, and I'll be the first one at the gate. I love you forever. 💗</p>
+      <p class="script center">Keep watch. Look up. Your redemption draweth nigh.</p>
+    </div>
+  </section>
+
   <!-- ALERTS -->
   <section class="pane" id="p-alerts">
     <div class="banner b-roses"><div class="bt"><b>Phone alerts</b><small>Straight to my phone, even when the app is closed</small></div></div>
@@ -341,6 +430,7 @@
     <div class="banner b-peonies"><div class="bt"><b>My testimony</b><small>“They overcame him by the blood of the Lamb, and by the word of their testimony”</small></div></div>
     <button class="tile wide" data-go="alerts"><b>🔔</b><span>Phone alerts</span><small>Sirens + big breaking news, straight to my phone</small></button>
     <div class="card fl" id="testitl"></div>
+    <div class="card lbset" id="lbset"><h2>🕊️ Left behind mode</h2></div>
     <div class="seg">
       <button data-log="signs" class="on">🌸 My signs</button>
       <button data-log="prayer">🙏 Prayer list</button>
@@ -398,11 +488,12 @@
   <button data-go="logs"><b>🌸</b>Me</button>
 </nav>
 
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
 <script src="more.js?v=4"></script>
 <script src="live.js?v=5"></script>
 <script src="vision.js?v=2"></script>
 <script src="blackout.js?v=1"></script>
 <script src="mark.js?v=1"></script>
+<script src="leftbehind.js?v=1"></script>
 </body>
 </html>
