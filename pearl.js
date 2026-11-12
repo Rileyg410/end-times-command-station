@@ -189,7 +189,8 @@ function paint() {
 }
 function toast(t) { const e = $('#ptoast'); if (!e) return; e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => { e.hidden = true; }, 3500); }
 
-const GROQK = 'pearl_groq', GROQ_MODEL = 'openai/gpt-oss-120b';
+const GROQK = 'pearl_groq', GROQ_MODELS = ['openai/gpt-oss-120b', 'meta-llama/llama-4-scout-17b-16e-instruct', 'llama-3.3-70b-versatile', 'openai/gpt-oss-20b'];
+const GNICE = {'openai/gpt-oss-120b': 'Groq · GPT-OSS', 'meta-llama/llama-4-scout-17b-16e-instruct': 'Groq · Llama 4', 'llama-3.3-70b-versatile': 'Groq · Llama 3.3', 'openai/gpt-oss-20b': 'Groq · GPT-OSS mini'};
 async function ask(model, messages, key, groq) {
   // streams the reply so words show up as they come; gives up on a model fast if it doesn't start
   const ctl = new AbortController(); let started = false, t = '', got = model;
@@ -265,8 +266,15 @@ async function send(text) {
   const gk = ls.get(GROQK, '');
   if (!(res && res.text) && gk) {
     const tb = $('#ptyping'); if (tb) { tb.className = 'pb her typing'; tb.innerHTML = '<span></span><span></span><span></span>'; }
-    const g = await ask(GROQ_MODEL, messages, gk, true);
-    if (g.text) res = {text: g.text, model: 'Groq · GPT-OSS'}; else last = g.msg || last;
+    // Groq's free tier limits words per minute, so send it a lighter load and try its other free models too
+    const lite = [messages[0]].concat(messages.slice(1).slice(-8));
+    for (const gm of GROQ_MODELS) {
+      let g = await ask(gm, lite, gk, true);
+      const w = g.status === 429 && /try again in ([\d.]+)s/i.exec(g.msg || '');
+      if (w && +w[1] <= 12) { await new Promise(r => setTimeout(r, (+w[1] + 0.5) * 1000)); g = await ask(gm, lite, gk, true); }
+      if (g.text) { res = {text: g.text, model: GNICE[gm]}; break; }
+      last = g.msg || last; if (g.auth) break;
+    }
   }
   $('#ptyping') && $('#ptyping').remove();
   if (res && res.text) {
@@ -275,7 +283,7 @@ async function send(text) {
   } else if (res && res.auth) {
     chat.pop(); toast('OpenRouter said that key isn’t working 🔑 Check it in Pearl settings below.'); $('#pin').value = text; $('#pset').open = true;
   } else {
-    chat.push({role: 'assistant', content: 'Ugh, sister, every free model is busy or down right this second 😩 Give it a minute and tap send again.' + (/data policy|privacy|No endpoints/i.test(last) ? '\n\nOne fix: on openrouter.ai go to Settings → Privacy and turn on the free model options, then try again.' : /limit|rate|quota/i.test(last) ? '\n\n(OpenRouter says the free daily limit is used up. It resets tomorrow.)' : ''), err: true});
+    chat.push({role: 'assistant', content: 'Ugh, sister, every free model is busy or down right this second 😩 Give it a minute and tap send again.' + (/data policy|privacy|No endpoints/i.test(last) ? '\n\nOne fix: on openrouter.ai go to Settings → Privacy and turn on the free model options, then try again.' : gk ? '\n\n(Your Groq backup needs a quick breather. Try again in a minute 🌸)' : /limit|rate|quota/i.test(last) ? '\n\n(OpenRouter says the free daily limit is used up. It resets tomorrow.)' : ''), err: true});
   }
   ls.set(CHATK, chat.slice(-80)); chat = ls.get(CHATK, chat);
   busy = false; $('#psend').disabled = false; paintChat(true);
