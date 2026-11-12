@@ -1,5 +1,5 @@
 /* Blackout mode: keeps the station, the Bible and the last news on the phone */
-const V = 'etcs-v8';
+const V = 'etcs-v9';
 const SHELL = 'etcs-shell-' + V, RUN = 'etcs-run-' + V, BIBLE = 'etcs-bible';
 const CORE = ['./', 'index.html', 'style.css?v=10', 'lace.css?v=1', 'pearl.css?v=1', 'pearl.js?v=1', 'rooms.js?v=2', 'app.js?v=8', 'more.js?v=4', 'live.js?v=6', 'vision.js?v=4', 'blackout.js?v=1', 'mark.js?v=1', 'leftbehind.js?v=2', 'batch4.js?v=3',
   'manifest.webmanifest', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',

@@ -151,14 +151,14 @@ function md(s) {
 let SRCS = [];
 function bubble(m, i) {
   SRCS = m.src || [];
-  if (m.role === 'user') return `<div class="pb me">${esc(m.content).replace(/\n/g, '<br>')}</div>`;
+  if (m.role === 'user') return `<div class="pb mine">${esc(m.content).replace(/\n/g, '<br>')}</div>`;
   const vv = (m.refs || []).map((r, j) => `<button class="pref" data-pref="${i}.${j}">📖 ${esc(r.label)}</button>`).join('');
   return `<div class="pb her"><div class="pbt">${md(m.content)}</div>${vv ? `<div class="prefs">${vv}</div><div class="pverse" id="pv${i}" hidden></div>` : ''}<small class="pmeta">${m.err ? '' : '🤍 Pearl' + (m.model ? ' · ' + esc(NICE[m.model] || m.model.split('/')[1]) : '')}</small></div>`;
 }
 function paintChat(scroll) {
   const log = $('#plog'); if (!log) return;
   log.innerHTML = chat.length ? chat.map(bubble).join('') : `<div class="pb her"><div class="pbt"><p>Hey sister 🤍 I'm Pearl. I can see what's going on in your station today, and I'm all ears for anything: Jesus, Israel, your vision, a random thought. What's on your heart?</p></div><small class="pmeta">🤍 Pearl</small></div>`;
-  $('#pchips').hidden = chat.length > 0;
+  $("#pearlchips").hidden = chat.length > 0;
   if (scroll) setTimeout(() => { const last = log.lastElementChild; if (last) last.scrollIntoView({block: 'start', behavior: 'smooth'}); }, 30);
 }
 function paint() {
@@ -250,7 +250,7 @@ function build() {
   </div>
   <div id="pchat" hidden>
     <div class="plog" id="plog"></div>
-    <div class="pchips" id="pchips">
+    <div class="pchips" id="pearlchips">
       <button data-pask="What's going on with Israel today? 🇮🇱">🇮🇱 Israel today</button>
       <button data-pask="Anything lining up in my threads today? 🧵">🧵 My threads</button>
       <button data-pask="Talk to me about my vision 🔥 What do you honestly think the gauge is?">🔥 My vision</button>
