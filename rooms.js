@@ -33,7 +33,7 @@ greet(); setInterval(greet, 60000);
 
 // ------------------------------------------------ rooms, crumbs, pearl
 const ROOMS = {watch: 'Watch', word: 'Word', signs: 'Signs', me: 'Me'};
-const HOME = {live: 'watch', mark: 'watch', peace: 'watch', news: 'watch', videos: 'watch', threads: 'word', prophecy: 'word', sky: 'signs', blackout: 'me', alerts: 'me', logs: 'me'};
+const HOME = {live: 'watch', mark: 'watch', peace: 'watch', news: 'watch', videos: 'watch', threads: 'word', prophecy: 'word', sky: 'signs', blackout: 'me', alerts: 'me', logs: 'me', pearl: 'me'};
 let lastRoom = '';
 Object.keys(HOME).forEach(p => {
   const pane = $('#p-' + p); if (!pane) return;
