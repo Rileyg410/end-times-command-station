@@ -177,3 +177,5 @@ body.athome .pearlnav,body.lb .pearlnav{display:none}
 .sref{margin:0;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#a9845a;font-weight:700}
 @media (prefers-reduced-motion:reduce){.lace,.vwrap::before,.room::after,.bulb{animation:none}}
 .rsbanner[hidden]{display:none!important}
+
+.crumb{position:sticky;top:calc(8px + env(safe-area-inset-top));z-index:7;background:rgba(255,255,255,.88);box-shadow:0 6px 16px rgba(150,80,110,.14)}
