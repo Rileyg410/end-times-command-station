@@ -1,4 +1,5 @@
 """Extra desks: Ezekiel 38 watch, Fig tree & signs watch, prophecy watchmen videos."""
+import os
 import re
 import time
 import urllib.parse
@@ -197,9 +198,12 @@ def videos(http_get, load_json, save_json, now_ts, central_time):
 
 
 def run_all(http_get, load_json, save_json, now_ts, central_time, trusted):
+    fast = os.environ.get("FAST") == "1"  # minute loop: slow desks only every 10th minute
     for name, fn in (("ezekiel", lambda: ezekiel(http_get, load_json, save_json, now_ts, central_time, trusted)),
                      ("signs", lambda: signs(http_get, load_json, save_json, now_ts, central_time)),
                      ("videos", lambda: videos(http_get, load_json, save_json, now_ts, central_time))):
+        if fast and name in ("signs", "videos"):
+            continue
         try:
             fn()
         except Exception as e:

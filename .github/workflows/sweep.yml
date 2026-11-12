@@ -24,12 +24,18 @@ jobs:
           if git fetch --depth=1 origin data 2>/dev/null; then
             git archive FETCH_HEAD | tar -x -C datadir
           fi
+          # the minute loop (live.yml) is the main engine; this sweep is only the fallback
+          if python3 -c "import json,time,sys; sys.exit(0 if time.time()-json.load(open('datadir/loop.json'))['t']<300 else 1)" 2>/dev/null; then
+            echo "Minute loop is alive, fallback not needed"; echo "SKIP=1" >> $GITHUB_ENV
+          fi
       - name: Sweep
+        if: env.SKIP != '1'
         env:
           DATA_DIR: datadir
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: python3 watcher/sweep.py
       - name: Publish
+        if: env.SKIP != '1'
         run: |
           cd datadir
           rm -f *.tmp

@@ -9,6 +9,10 @@ on:
         description: "How long to listen"
         default: "345"
 
+permissions:
+  contents: read
+  actions: write
+
 concurrency:
   group: sirens
   cancel-in-progress: false
@@ -25,3 +29,8 @@ jobs:
           FEED_TOPIC: etcs-sirens-live-q8v3n6
           RUN_MINUTES: ${{ github.event.inputs.minutes || '345' }}
         run: python3 watcher/sirens.py
+      - name: Hand off to the next run
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run sirens.yml -R ${{ github.repository }} || true

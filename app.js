@@ -15,6 +15,53 @@ const DATA = (() => {
   }
   return 'https://raw.githubusercontent.com/Rileyg410/end-times-command-station/data/';
 })();
+// live news: the minute loop posts each new story to this public topic the moment it finds it
+const NEWS_FEED = 'etcs-news-live-71d8b2';
+const DELTA = {};
+let lastNewsId = '';
+function addDelta(m) {
+  try {
+    if (m.id) lastNewsId = m.id;
+    const d = JSON.parse(m.message), fs = Object.keys(d.f || {});
+    fs.forEach(f => { const map = DELTA[f] || (DELTA[f] = {}); (d.f[f] || []).forEach(s => { if (s && s.id) map[s.id] = s; }); });
+    return fs;
+  } catch (e) { return []; }
+}
+function mergeLive(f, j) {
+  const add = DELTA[f]; if (!add || !j || !Array.isArray(j.stories)) return j;
+  const ids = new Set(j.stories.map(s => s.id)), keep = (j.keep_hours || 48) * 3600, now = Date.now() / 1000;
+  const extra = Object.values(add).filter(s => !ids.has(s.id) && now - s.t < keep);
+  if (!extra.length) return j;
+  j.stories = extra.concat(j.stories).sort((a, b) => b.t - a.t);
+  j.count = j.stories.length;
+  const n = v => Array.isArray(v) ? v.length : !!v;
+  if (j.counts) Object.keys(j.counts).forEach(k => { j.counts[k] = j.stories.filter(s => k === 'mil' ? n(s.mil) : k === 'big' ? n(s.big) : (s.tags || s.cats || []).includes(k)).length; });
+  j.updated = Math.max(j.updated || 0, ...extra.map(s => s.seen || s.t));
+  return j;
+}
+const rawFetch = window.fetch.bind(window);
+window.fetch = async (u, o) => {
+  const r = await rawFetch(u, o);
+  const s = typeof u === 'string' ? u : (u && u.url) || '';
+  if (!r.ok || !s.startsWith(DATA)) return r;
+  const f = s.slice(DATA.length).split('?')[0];
+  if (!DELTA[f]) return r;
+  try { return new Response(JSON.stringify(mergeLive(f, await r.clone().json())), {status: 200, headers: {'Content-Type': 'application/json'}}); } catch (e) { return r; }
+};
+async function newsCatchUp(since) {
+  try {
+    const r = await rawFetch(`https://ntfy.sh/${NEWS_FEED}/json?poll=1&since=${since}`), fs = new Set();
+    (await r.text()).split('\n').filter(Boolean).forEach(l => { try { const m = JSON.parse(l); if (m.event === 'message') addDelta(m).forEach(x => fs.add(x)); } catch (e) { /* skip */ } });
+    if (fs.size) window.dispatchEvent(new CustomEvent('etcs-live', {detail: [...fs]}));
+  } catch (e) { /* offline */ }
+}
+async function newsFeed() {
+  await newsCatchUp('6h');
+  if (!window.EventSource) return;
+  const es = new EventSource(`https://ntfy.sh/${NEWS_FEED}/sse`);
+  es.onmessage = e => { try { const m = JSON.parse(e.data); if (m.event === 'message') { const fs = addDelta(m); if (fs.length) window.dispatchEvent(new CustomEvent('etcs-live', {detail: fs})); } } catch (x) { /* skip */ } };
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) newsCatchUp(lastNewsId || '6h'); });
+}
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* full */ } },
@@ -250,7 +297,7 @@ function news() {
   $('#deskintro').textContent = cfg.intro;
   $('#chips').innerHTML = cfg.chips.map(([k, n]) => `<button data-chip="${k}" class="${chip === k ? 'on' : ''}">${esc(n)} <small>${k === 'all' ? all.length : (c[k] || 0)}</small></button>`).join('') +
     (cfg.hot ? `<button data-hot="1" class="bigchip${hotOnly ? ' on' : ''}">${cfg.hotLabel} <small>${c[cfg.hotKey] || all.filter(cfg.hot).length}</small></button>` : '');
-  $('#newssub').textContent = D ? `Updated ${ago(D.updated)} · ${all.length} stories from the last ${Math.round((D.keep_hours || 48) / 24)} days · refreshes about every 10 min` : 'Linking to the newsroom…';
+  $('#newssub').textContent = D ? `Updated ${ago(D.updated)} · ${all.length} stories from the last ${Math.round((D.keep_hours || 48) / 24)} days · updates live every minute` : 'Linking to the newsroom…';
   if (!D) { $('#newslist').innerHTML = '<div class="empty">Loading the news… 💌</div>'; return; }
   let list = all;
   if (chip !== 'all') list = list.filter(s => (s[cfg.key] || []).includes(chip));
@@ -389,6 +436,8 @@ function tick() { clocks(); watch(); }
 function daily() { verse(); testi(); hebrew(); feast(); }
 verse(); testi(); tick(); renderSigns(); renderPrayers(); news(); bigcard();
 hebrew(); feast(); loadNews(); loadQuakes();
+newsFeed();
+window.addEventListener('etcs-live', e => { if (e.detail.some(f => Object.values(DESKS).some(d => d.file === f))) loadNews(); });
 setInterval(tick, 1000);
 setInterval(() => { loadNews(); loadQuakes(); if (ymd() !== lastDay) { lastDay = ymd(); daily(); } }, 3 * 60 * 1000);
 setInterval(() => { const z = $('#hebday'); if (z && /Today/.test(z.textContent) && new Date().getHours() >= 16) hebrew(); }, 10 * 60 * 1000);

@@ -169,7 +169,7 @@ let TD = null, ttChip = 'all';
 function temple() {
   const all = (TD && TD.stories) || [], c = (TD && TD.counts) || {};
   $('#ttchips').innerHTML = TT.map(([k, n]) => `<button data-tt="${k}" class="${ttChip === k ? 'on' : ''}">${n} <small>${k === 'all' ? all.length : (c[k] || 0)}</small></button>`).join('');
-  $('#ttsub').textContent = TD ? `Updated ${ago(TD.updated)} · ${all.length} stories from the last ${Math.round((TD.keep_hours || 240) / 24)} days · refreshes about every 10 min` : '';
+  $('#ttsub').textContent = TD ? `Updated ${ago(TD.updated)} · ${all.length} stories from the last ${Math.round((TD.keep_hours || 240) / 24)} days · updates live every minute` : '';
   const list = ttChip === 'all' ? all : all.filter(s => (s.tags || []).includes(ttChip));
   $('#ttlist').innerHTML = !TD ? '<div class="empty">Loading the tracker… 🕍</div>' : list.length ? list.map(s =>
     `<a class="ncard" href="${esc(s.link)}" target="_blank" rel="noopener"><div class="top"><span class="src">${esc(s.src)}</span><span class="ago">${esc(ago(s.t))}</span></div>` +
@@ -274,6 +274,7 @@ function topic() { return ($('#ntopic').value || '').trim(); }
 
 // ---------------------------------------------------------------- start
 loadCams(); loadSirens(); loadLive(); loadTemple(); loadMarkets();
+window.addEventListener('etcs-live', e => { if (e.detail.includes('temple.json')) loadTemple(); });
 setInterval(() => { loadSirens(); loadTemple(); loadMarkets(); }, 3 * 60 * 1000);
 setInterval(() => { loadCams(); }, 15 * 60 * 1000);
 setInterval(() => { if (liveOn() && sub === 'markets') btc(); }, 60 * 1000);

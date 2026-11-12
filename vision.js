@@ -243,5 +243,6 @@ async function liveData() {
   hist = await J(DATA + 'quakehist.json?t=' + Math.floor(Date.now() / 3600000));
   if (hist && hist.days && hist.days.length) { base = hist.base; $('#vday').max = hist.days.length - 1; setDay(hist.days.length - 1); $('#vreplay').hidden = false; }
   await liveData(); setInterval(liveData, 10 * 60 * 1000);
+  window.addEventListener('etcs-live', e => { if (e.detail.some(f => /mideast|ezekiel|world/.test(f))) liveData(); });
 })();
 })();

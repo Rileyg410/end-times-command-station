@@ -329,7 +329,11 @@ def push_breaking(load_json, save_json, now_ts, big_rx, big_not):
         if any(o["id"] == s["id"] or mideast._same(o["title"], s["title"]) for o in sent + new):
             continue
         new.append({"id": s["id"], "title": s["title"], "src": s.get("src", ""), "link": s.get("link", ""), "t": now_ts})
-    if new and topic and st.get("init"):
+    last = st.get("last_push", 0)
+    if new and topic and st.get("init") and now_ts - last < 180:
+        print(f"push: {len(new)} waiting (one phone alert per 3 min)")
+        new = []  # not marked, so they go out on the next allowed minute
+    elif new and topic and st.get("init"):
         try:
             if len(new) == 1:
                 ntfy(topic, "\U0001F6A8\U0001F6A8\U0001F6A8 BREAKING", f"{new[0]['title']}\n\u2014 {new[0]['src']}", 5, click=new[0]["link"])
@@ -339,12 +343,13 @@ def push_breaking(load_json, save_json, now_ts, big_rx, big_not):
                 ntfy(topic, f"\U0001F6A8\U0001F6A8\U0001F6A8 {len(new)} BIG STORIES", lines + more, 5,
                      click="https://rileyg410.github.io/end-times-command-station/")
             print(f"push: sent {len(new)} breaking")
+            last = now_ts
         except Exception as e:
             print("push error:", type(e).__name__, e)
             new = []
     elif new:
         print(f"push: {len(new)} marked (first run or no topic)")
-    save_json("push_state.json", {"init": 1 if topic else 0, "updated": now_ts, "sent": (new + sent)[:200]})
+    save_json("push_state.json", {"init": 1 if topic else 0, "updated": now_ts, "last_push": last, "sent": (new + sent)[:200]})
 
 
 def run_all(http_get, load_json, save_json, now_ts, central_time, trusted, merge, big_rx, big_not):
@@ -353,6 +358,8 @@ def run_all(http_get, load_json, save_json, now_ts, central_time, trusted, merge
                      ("temple", lambda: temple(http_get, load_json, save_json, now_ts, central_time, trusted, merge)),
                      ("markets", lambda: markets(save_json, load_json, now_ts)),
                      ("push", lambda: push_breaking(load_json, save_json, now_ts, big_rx, big_not))):
+        if os.environ.get("FAST") == "1" and name in ("cams", "markets"):
+            continue
         try:
             fn()
         except Exception as e:

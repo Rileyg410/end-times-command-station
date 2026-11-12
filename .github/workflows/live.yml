@@ -1,0 +1,41 @@
+name: Live loop
+
+# Runs the news sweep every minute inside one long job (public repo, so it's free),
+# then hands off to the next run. The schedule below only restarts it if a hand-off is ever missed.
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: live-loop
+  cancel-in-progress: false
+
+jobs:
+  loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 358
+    steps:
+      - uses: actions/checkout@v4
+      - name: Load last data
+        run: |
+          mkdir -p datadir
+          if git fetch --depth=1 origin data 2>/dev/null; then
+            git archive FETCH_HEAD | tar -x -C datadir
+          fi
+      - name: Run every minute
+        env:
+          DATA_DIR: datadir
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          RUN_MINUTES: "350"
+          PUSH_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        run: python3 -u watcher/loop.py
+      - name: Hand off to the next run
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run live.yml -R ${{ github.repository }} || true
